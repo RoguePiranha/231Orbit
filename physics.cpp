@@ -1,4 +1,15 @@
-﻿#include "physics.h"
+﻿/***********************************************************************
+ * Header File:
+ *   Physics : The representation of the physics of the game
+ * Authors:
+ *   Dallin Olson, Andrew Swayze
+ * Summary:
+ *  This is the code that will be used to calculate the physics of the game.
+ *  It determines everything from the time dilation to the relative position
+ *  of a satellite to the Earth.
+ ************************************************************************/
+
+#include "physics.h"
 
 
 /********************************************/
@@ -125,9 +136,9 @@ double Physics::VerticalCompAcceleration();
 * This is a position on a coordinate plane
 *	S˅o - Initial position.
 *****************************/
-double Physics::NewtonsFirstLaw(double So)
+double Physics::NewtonsFirstLaw(double S0)
 {
-	double St = So;
+	double St = S0;
 	return St;
 }
 
@@ -135,16 +146,16 @@ double Physics::NewtonsFirstLaw(double So)
 /*****************************
 * MOTION WITH CONSTANT VELOCITY
 * Equation:
-*	s = s˅o + V * t
+*	s = s˅0 + V * t
 * Variables:
 *	s	- Distance in meters (m).
-*	s˅o - Initial distance (m)
+*	s˅0 - Initial distance (m)
 *	v   - Velocity (m/s).
 *	t   - Time (s).
 *****************************/
-double Physics::MotionWConstVel(double so, double v, double t)
+double Physics::MotionWConstVel(double s0, double v, double t)
 {
-	double s = so + (v * t);
+	double s = s0 + (v * t);
 	return s;
 }
 
@@ -161,9 +172,9 @@ double Physics::MotionWConstVel(double so, double v, double t)
 *****************************/
 
 
-double Physics::HorizontalPosConstVel(double xo, double dx, double t)
+double Physics::HorizontalPosConstVel(double x0, double dx, double t)
 {
-	double xt = xo + (dx * t);
+	double xt = x0 + (dx * t);
 	return xt;
 }
 
@@ -178,9 +189,9 @@ double Physics::HorizontalPosConstVel(double xo, double dx, double t)
 *	dy  - Horizontal component of velocity (m/s).
 *	t   - Time (s).
 *****************************/
-double Physics::VerticalPosConstVel(double yo, double dy, double t)
+double Physics::VerticalPosConstVel(double y0, double dy, double t)
 {
-	double yt = yo + (dy * t);
+	double yt = y0 + (dy * t);
 	return yt;
 }
 
