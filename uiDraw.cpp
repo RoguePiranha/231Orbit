@@ -737,6 +737,7 @@ void ogstream::drawShip(const Position& center, double rotation, bool thrust)
    glEnd();
 }
 
+
 /************************************************************************
  * DRAW Earth
  * Draw Earth
