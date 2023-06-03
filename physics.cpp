@@ -10,7 +10,9 @@
  ************************************************************************/
 
 #include "physics.h"
+#include <cmath>
 
+#define pi 3.14159265358979323846
 
 /********************************************/
 /*                   TIME                   */
@@ -27,7 +29,9 @@
 *   hoursDay - Hours in a day.
 *   minutesHour - Minutes in an hour.
 **********************************/
-void Physics::timeDilation();
+void Physics::timeDilation(double hoursDay, double minutesHour){
+	double td = hoursDay * minutesHour;
+};
 
 /**********************************
 * Time Per Frame
@@ -41,7 +45,9 @@ void Physics::timeDilation();
 *   td - Time dilation
 *   frameRate - Frames per second (30)
 **********************************/
-void Physics::timePerFrame();
+void Physics::timePerFrame(double frameRate){
+	double tpf = td / frameRate;
+};
 
 /********************************************/
 /*                   EARTH                  */
@@ -59,7 +65,9 @@ void Physics::timePerFrame();
 *   secondsDay - Number of seconds for the Earth to
 *                complete one rotation (86400)
 **********************************/
-double Physics::rotationSpeed();
+double Physics::rotationSpeed(double frameRate, double secondsDay){
+	return -(2 * pi / frameRate) * (td / secondsDay);
+};
 
 /**********************************
 * Gravity Equation
@@ -71,7 +79,9 @@ double Physics::rotationSpeed();
 *   g - gravity at sea level (9.8 m/sˆ2)
 *   r - radius of the Earth (6,378,000 m)
 **********************************/
-double Physics::gravityEquation();
+double Physics::gravityEquation(double g, double r, double h){
+	return g * std::pow((r / (r + h)), 2);
+};
 
 /**********************************
 * Height Above Earth
@@ -85,7 +95,9 @@ double Physics::gravityEquation();
 *       relative to the center of the Earth (0)
 *   r - Radius of the Earth (6,378,000 m)
 **********************************/
-double Physics::HtAboveEarth();
+double Physics::HtAboveEarth(double x, double y, double r){
+	return std::sqrt(std::pow(x, 2) + std::pow(y, 2)) - r;
+};
 
 /**********************************
 * Direction of Gravity Pull
@@ -99,7 +111,9 @@ double Physics::HtAboveEarth();
 *   x˅s = horizontal position of the satellite in meters
 *   y˅s = vertical position of the satellite in meters
 **********************************/
-double Physics::DirectionOfGravity();
+double Physics::DirectionOfGravity(double xe, double ye, double xs, double ys){
+	return std::atan2((ye - ys), (xe - xs));
+};
 
 /**********************************
 * Horizontal Component of Acceleration
@@ -110,7 +124,9 @@ double Physics::DirectionOfGravity();
 *   a = total acceleration
 *   angle = angle (0° is up) of the direction of acceleration
 **********************************/
-double Physics::HorizontalCompAcceleration();
+double Physics::HorizontalCompAcceleration(double a, double angle){
+	return a * std::sin(angle);
+};
 
 /**********************************
 * Vertical Component of Acceleration
@@ -121,7 +137,9 @@ double Physics::HorizontalCompAcceleration();
 *   a = total acceleration
 *   angle = angle (0° is up) of the direction of acceleration
 **********************************/
-double Physics::VerticalCompAcceleration();
+double Physics::VerticalCompAcceleration(double a, double angle){
+	return a * std::cos(angle);
+};
 
 /********************************************/
 /*                 MOTION                   */
@@ -206,7 +224,10 @@ double Physics::VerticalPosConstVel(double y0, double dy, double t)
 *   t - Time (s)
 *   a - Acceleration (m/s˅2)
 *****************************/
-double Physics::DistanceFormula();
+double Physics::DistanceFormula(double s0, double v, double t, double a)
+{
+	return s0 + (v * t) + (0.5 * a * std::pow(t, 2));
+}
 
 /*****************************
 * VELOCITY WITH CONSTANT ACCELERATION
@@ -218,7 +239,10 @@ double Physics::DistanceFormula();
 *   a - Acceleration (m/s˅2)
 *   t - Time (s)
 *****************************/
-double Physics::VelocityWConstAccel();
+double Physics::VelocityWConstAccel(double v0, double a, double t)
+{
+	return v0 + (a * t);
+}
 
 /*****************************
 * HORIZONTAL DISTANCE FORMULA
@@ -231,7 +255,10 @@ double Physics::VelocityWConstAccel();
 *   ddx - Horizontal component of acceleration (m/s˅2)
 *   t - Time (s)
 *****************************/
-double Physics::HorizontalDisFormula();
+double Physics::HorizontalDisFormula(double x0, double dx, double ddx, double t)
+{
+	return x0 + (dx * t) + (0.5 * ddx * std::pow(t, 2));
+}
 
 /*****************************
 * VERTICAL DISTANCE FORMULA
@@ -244,7 +271,10 @@ double Physics::HorizontalDisFormula();
 *   ddy - Vertical component of acceleration (m/s˅2)
 *   t - Time (s)
 ****************************/
-double Physics::VerticalDisFormula();
+double Physics::VerticalDisFormula(double y0, double dy, double ddy, double t)
+{
+	return y0 + (dy * t) + (0.5 * ddy * std::pow(t, 2));
+}
 
 /*****************************
 * HORIZONTAL VELOCITY WITH CONSTANT ACCELERATION
@@ -256,7 +286,10 @@ double Physics::VerticalDisFormula();
 *   ddx - Horizontal component of acceleration (m/s˅2)
 *   t - Time (s)
 *****************************/
-double Physics::HorizontalVelWConstAccel();
+double Physics::HorizontalVelWConstAccel(double dx0, double ddx, double t)
+{
+	return dx0 + (ddx * t);
+}
 
 /*****************************
 * VERTICAL VELOCITY WITH CONSTANT ACCELERATION
@@ -268,4 +301,7 @@ double Physics::HorizontalVelWConstAccel();
 *   ddy - Vertical component of acceleration (m/s˅2)
 *   t - Time (s)
 ***************************/
-double Physics::VerticalVelWConstAccel();
+double Physics::VerticalVelWConstAccel(double dy0, double ddy, double t)
+{
+	return dy0 + (ddy * t);
+}
