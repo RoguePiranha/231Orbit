@@ -12,16 +12,16 @@
 class Physics
 {
 private:
-    double td; // Time dilation
+    double td;  // Time dilation
     double tpf; // Time per frame
 
 public:
     Physics();
-    
+
     // Time
     void timeDilation(double hoursDay, double minutesHour);
     void timePerFrame(double frameRate);
-    
+
     // Earth
     double rotationSpeed(double frameRate, double secondsDay);
     double gravityEquation(double g, double r, double h);
@@ -41,5 +41,4 @@ public:
     double VerticalDisFormula(double y0, double dy, double ddy, double t);
     double HorizontalVelWConstAccel(double dx0, double ddx, double t);
     double VerticalVelWConstAccel(double dy0, double ddy, double t);
-
 };
