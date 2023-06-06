@@ -14,6 +14,8 @@
 #include <sstream>    // convert an integer into text
 #include <cassert>    // I feel the need... the need for asserts
 #include <time.h>     // for clock
+#include "physics.h"
+#include "position.h"
 
 
 #ifdef __APPLE__
@@ -358,6 +360,140 @@ void ogstream::drawSputnik(const Position& center, double rotation)
    glEnd();
 }
 
+///************************************************************************
+// * DRAW GPS Left
+// * Draw a GPS satellite left solar array on the screen
+// *  INPUT center    The position of the ship
+// *        rotation  Which direction it is point
+// *        offset    For pieces of the satellite, this is the relative position of the center
+// *                  of rotation when it is connected to the main satellite
+// *************************************************************************/
+//void ogstream::drawGPSLeft(const Position& center, double rotation, const Position& offset)
+//{
+//   ColorRect rects[] =
+//   {
+//      {-6,5,  6,5,  6,1,  -6,1,  RGB_WHITE},
+//      {-6,0,  6,0,  6,-4, -6,-4, RGB_WHITE},
+//      {-5,4,  5,4,  5,2,  -5,2,  RGB_DEEP_BLUE },
+//      {-5,-1, 5,-1, 5,-3, -5,-3, RGB_DEEP_BLUE }
+//   };
+//
+//   for (int i = 0; i < sizeof(rects) / sizeof(ColorRect); i++)
+//      glDrawRect(center, offset, rects[i], rotation);
+//
+//   // draw the line connecting the solar array to the rest of the ship
+//   glBegin(GL_LINE_STRIP);
+//   glColor(RGB_WHITE);
+//   glVertexPoint(rotate(center,
+//                        3.0 + offset.getPixelsX(),
+//                        4.0 + offset.getPixelsY(),
+//                        rotation));
+//   glVertexPoint(rotate(center,
+//                        0.0 + offset.getPixelsX(),
+//                        8.0 + offset.getPixelsY(),
+//                        rotation));
+//   glVertexPoint(rotate(center,
+//                        -3.0 + offset.getPixelsX(),
+//                        4.0 + offset.getPixelsY(),
+//                        rotation));
+//   glEnd();
+//}
+//
+///************************************************************************
+// * DRAW GPS Right
+// * Draw a GPS satellite right solar array on the screen
+// *  INPUT center    The position of the ship
+// *        rotation  Which direction it is point
+// *        offset    For pieces of the satellite, this is the relative position of the center
+// *                  of rotation when it is connected to the main satellite
+// *************************************************************************/
+//void ogstream::drawGPSRight(const Position& center, double rotation, const Position& offset)
+//{
+//
+//   ColorRect rects[] =
+//   {
+//      {-6,-5, 6,-5, 6,-1, -6,-1,  RGB_WHITE},
+//      {-6,0,  6,0,  6,4,  -6,4,   RGB_WHITE},
+//      {-5,-4, 5,-4, 5,-2, -5,-2,  RGB_DEEP_BLUE },
+//      {-5,1,  5,1,  5,3,  -5,3,   RGB_DEEP_BLUE }
+//   };
+//
+//   for (int i = 0; i < sizeof(rects) / sizeof(ColorRect); i++)
+//      glDrawRect(center, offset, rects[i], rotation);
+//
+//   // draw the line connecting the solar array to the rest of the ship
+//   glBegin(GL_LINE_STRIP);
+//   glColor(RGB_WHITE);
+//   glVertexPoint(rotate(center,
+//                        3.0 + offset.getPixelsX(),
+//                        -4.0 + offset.getPixelsY(),
+//                        rotation));
+//   glVertexPoint(rotate(center,
+//                        0.0 + offset.getPixelsX(),
+//                        -8.0 + offset.getPixelsY(),
+//                        rotation));
+//   glVertexPoint(rotate(center,
+//                        -3.0 + offset.getPixelsX(),
+//                        -4.0 + offset.getPixelsY(),
+//                        rotation));
+//   glEnd();
+//
+//}
+//
+///************************************************************************
+// * DRAW GPS Center
+// * Draw the main part of the GPS satellite
+// *  INPUT center    The position of the ship
+// *        rotation  Which direction it is point
+// *************************************************************************/
+//void ogstream::drawGPSCenter(const Position& center, double rotation, Position offset)
+//{
+//    
+//   ColorRect rects[4] =
+//   {
+//      {-3,4,  4,4,  4,-4, -3,-4, RGB_GOLD  },
+//      {4,4,  -3,4, -3,-4, -4,-4, RGB_WHITE },
+//      {4,3,   7,3,   7,1,   4,1, RGB_GREY  },
+//      {4,-3, 7,-3,  7,-1,  4,-1, RGB_GREY  }
+//   };
+//
+//   for (int i = 0; i < sizeof(rects) / sizeof(ColorRect); i++)
+//      glDrawRect(center, offset, rects[i], rotation);
+//}
+//
+///************************************************************************
+// * DRAW GPS
+// * Draw a GPS satellite on the screen. It consists of three parts
+// *  INPUT center    The position of the ship
+// *        rotation  Which direction it is point
+// *************************************************************************/
+//void ogstream::drawGPS(const Position& center, double rotation)
+//{
+//    Position offset;
+//    offset.addPixelsX(150);
+//    offset.addPixelsY(150);
+//   drawGPSCenter(center, rotation, offset);
+//   
+//   drawGPSCenter(center, -0.1, Position());
+//   
+//   Position posRight;
+//   posRight.setPixelsX(150.0);
+//   posRight.setPixelsY(162.0);
+//   drawGPSRight(center, rotation, posRight);
+//   
+//   posRight.setPixelsX(0.0);
+//   posRight.setPixelsY(12.0);
+//   drawGPSRight(center, -0.1, posRight);
+//   
+//   Position posLeft;
+//   posLeft.setPixelsX(150.0);
+//   posLeft.setPixelsY(138.0);
+//   drawGPSLeft(center,  rotation, posLeft);
+//   
+//   posLeft.setPixelsX(0.0);
+//   posLeft.setPixelsY(-12.0);
+//   drawGPSLeft(center, -0.0, posLeft);
+//}
 /************************************************************************
  * DRAW GPS Left
  * Draw a GPS satellite left solar array on the screen
@@ -368,33 +504,33 @@ void ogstream::drawSputnik(const Position& center, double rotation)
  *************************************************************************/
 void ogstream::drawGPSLeft(const Position& center, double rotation, const Position& offset)
 {
-   ColorRect rects[] =
-   {
-      {-6,5,  6,5,  6,1,  -6,1,  RGB_WHITE},
-      {-6,0,  6,0,  6,-4, -6,-4, RGB_WHITE},
-      {-5,4,  5,4,  5,2,  -5,2,  RGB_DEEP_BLUE },
-      {-5,-1, 5,-1, 5,-3, -5,-3, RGB_DEEP_BLUE }
-   };
+    ColorRect rects[] =
+    {
+       {-6,5,  6,5,  6,1,  -6,1,  RGB_WHITE},
+       {-6,0,  6,0,  6,-4, -6,-4, RGB_WHITE},
+       {-5,4,  5,4,  5,2,  -5,2,  RGB_DEEP_BLUE },
+       {-5,-1, 5,-1, 5,-3, -5,-3, RGB_DEEP_BLUE }
+    };
 
-   for (int i = 0; i < sizeof(rects) / sizeof(ColorRect); i++)
-      glDrawRect(center, offset, rects[i], rotation);
+    for (int i = 0; i < sizeof(rects) / sizeof(ColorRect); i++)
+        glDrawRect(center, offset, rects[i], rotation);
 
-   // draw the line connecting the solar array to the rest of the ship
-   glBegin(GL_LINE_STRIP);
-   glColor(RGB_WHITE);
-   glVertexPoint(rotate(center,
-                        3.0 + offset.getPixelsX(),
-                        4.0 + offset.getPixelsY(),
-                        rotation));
-   glVertexPoint(rotate(center,
-                        0.0 + offset.getPixelsX(),
-                        8.0 + offset.getPixelsY(),
-                        rotation));
-   glVertexPoint(rotate(center,
-                        -3.0 + offset.getPixelsX(),
-                        4.0 + offset.getPixelsY(),
-                        rotation));
-   glEnd();
+    // draw the line connecting the solar array to the rest of the ship
+    glBegin(GL_LINE_STRIP);
+    glColor(RGB_WHITE);
+    glVertexPoint(rotate(center,
+        3.0 + offset.getPixelsX(),
+        4.0 + offset.getPixelsY(),
+        rotation));
+    glVertexPoint(rotate(center,
+        0.0 + offset.getPixelsX(),
+        8.0 + offset.getPixelsY(),
+        rotation));
+    glVertexPoint(rotate(center,
+        -3.0 + offset.getPixelsX(),
+        4.0 + offset.getPixelsY(),
+        rotation));
+    glEnd();
 }
 
 /************************************************************************
@@ -407,33 +543,33 @@ void ogstream::drawGPSLeft(const Position& center, double rotation, const Positi
  *************************************************************************/
 void ogstream::drawGPSRight(const Position& center, double rotation, const Position& offset)
 {
-   ColorRect rects[] =
-   {
-      {-6,-5, 6,-5, 6,-1, -6,-1,  RGB_WHITE},
-      {-6,0,  6,0,  6,4,  -6,4,   RGB_WHITE},
-      {-5,-4, 5,-4, 5,-2, -5,-2,  RGB_DEEP_BLUE },
-      {-5,1,  5,1,  5,3,  -5,3,   RGB_DEEP_BLUE }
-   };
+    ColorRect rects[] =
+    {
+       {-6,-5, 6,-5, 6,-1, -6,-1,  RGB_WHITE},
+       {-6,0,  6,0,  6,4,  -6,4,   RGB_WHITE},
+       {-5,-4, 5,-4, 5,-2, -5,-2,  RGB_DEEP_BLUE },
+       {-5,1,  5,1,  5,3,  -5,3,   RGB_DEEP_BLUE }
+    };
 
-   for (int i = 0; i < sizeof(rects) / sizeof(ColorRect); i++)
-      glDrawRect(center, offset, rects[i], rotation);
+    for (int i = 0; i < sizeof(rects) / sizeof(ColorRect); i++)
+        glDrawRect(center, offset, rects[i], rotation);
 
-   // draw the line connecting the solar array to the rest of the ship
-   glBegin(GL_LINE_STRIP);
-   glColor(RGB_WHITE);
-   glVertexPoint(rotate(center,
-                        3.0 + offset.getPixelsX(),
-                        -4.0 + offset.getPixelsY(),
-                        rotation));
-   glVertexPoint(rotate(center,
-                        0.0 + offset.getPixelsX(),
-                        -8.0 + offset.getPixelsY(),
-                        rotation));
-   glVertexPoint(rotate(center,
-                        -3.0 + offset.getPixelsX(),
-                        -4.0 + offset.getPixelsY(),
-                        rotation));
-   glEnd();
+    // draw the line connecting the solar array to the rest of the ship
+    glBegin(GL_LINE_STRIP);
+    glColor(RGB_WHITE);
+    glVertexPoint(rotate(center,
+        3.0 + offset.getPixelsX(),
+        -4.0 + offset.getPixelsY(),
+        rotation));
+    glVertexPoint(rotate(center,
+        0.0 + offset.getPixelsX(),
+        -8.0 + offset.getPixelsY(),
+        rotation));
+    glVertexPoint(rotate(center,
+        -3.0 + offset.getPixelsX(),
+        -4.0 + offset.getPixelsY(),
+        rotation));
+    glEnd();
 
 }
 
@@ -445,16 +581,16 @@ void ogstream::drawGPSRight(const Position& center, double rotation, const Posit
  *************************************************************************/
 void ogstream::drawGPSCenter(const Position& center, double rotation)
 {
-   ColorRect rects[4] =
-   {
-      {-3,4,  4,4,  4,-4, -3,-4, RGB_GOLD  },
-      {4,4,  -3,4, -3,-4, -4,-4, RGB_WHITE },
-      {4,3,   7,3,   7,1,   4,1, RGB_GREY  },
-      {4,-3, 7,-3,  7,-1,  4,-1, RGB_GREY  }
-   };
+    ColorRect rects[4] =
+    {
+       {-3,4,  4,4,  4,-4, -3,-4, RGB_GOLD  },
+       {4,4,  -3,4, -3,-4, -4,-4, RGB_WHITE },
+       {4,3,   7,3,   7,1,   4,1, RGB_GREY  },
+       {4,-3, 7,-3,  7,-1,  4,-1, RGB_GREY  }
+    };
 
-   for (int i = 0; i < sizeof(rects) / sizeof(ColorRect); i++)
-      glDrawRect(center, Position(), rects[i], rotation);
+    for (int i = 0; i < sizeof(rects) / sizeof(ColorRect); i++)
+        glDrawRect(center, Position(), rects[i], rotation);
 }
 
 /************************************************************************
@@ -465,18 +601,19 @@ void ogstream::drawGPSCenter(const Position& center, double rotation)
  *************************************************************************/
 void ogstream::drawGPS(const Position& center, double rotation)
 {
-   drawGPSCenter(center, rotation);
-   
-   Position posRight;
-   posRight.setPixelsX(0.0);
-   posRight.setPixelsY(12.0);
-   drawGPSRight(center, rotation, posRight);
-   
-   Position posLeft;
-   posLeft.setPixelsX(0.0);
-   posLeft.setPixelsY(-12.0);
-   drawGPSLeft(center,  rotation, posLeft);
+    drawGPSCenter(center, rotation);
+
+    Position posRight;
+    posRight.setPixelsX(0.0);
+    posRight.setPixelsY(12.0);
+    drawGPSRight(center, rotation, posRight);
+
+    Position posLeft;
+    posLeft.setPixelsX(0.0);
+    posLeft.setPixelsY(-12.0);
+    drawGPSLeft(center, rotation, posLeft);
 }
+
 
 /************************************************************************
  * DRAW Hubble Telescope

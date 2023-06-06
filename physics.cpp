@@ -90,7 +90,7 @@ double Physics::rotationSpeed(double frameRate, double secondsDay)
  **********************************/
 double Physics::gravityEquation(double g, double r, double h)
 {
-	return g * std::pow((r / (r + h)), 2);
+	return g * ((r / (r + h)) * (r / (r + h)));
 };
 
 /**********************************
@@ -124,7 +124,7 @@ double Physics::HtAboveEarth(double x, double y, double r)
  **********************************/
 double Physics::DirectionOfGravity(double xe, double ye, double xs, double ys)
 {
-	return std::atan2((ye - ys), (xe - xs));
+	return std::atan2((-ys), (-xs));
 };
 
 /**********************************

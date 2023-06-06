@@ -15,12 +15,23 @@
 #include "uiInteract.h" // for INTERFACE
 #include "uiDraw.h"     // for RANDOM and DRAW*
 #include "position.h"   // for POINT
+#include "physics.h"
 using namespace std;
 
 /*************************************************************************
  * Demo
  * Test structure to capture the LM that will move around the screen
  *************************************************************************/
+class Satellite
+{
+public:
+    Position pt;
+    double dx0 = -2680 * 8;
+    double dy0 = 1550 * 8;
+    double dx;
+    double dy;
+};
+
 class Demo
 {
 public:
@@ -41,8 +52,8 @@ public:
       ptShip.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
       ptShip.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));*/
 
-      ptGPS.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
-      ptGPS.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
+      GPS.pt.setMetersX(21082000);
+      GPS.pt.setMetersY(36515095);
 
       for (int i = 0; i < 100; i++)
       {
@@ -60,7 +71,7 @@ public:
    // Position ptStarlink;
    // Position ptCrewDragon;
    // Position ptShip;
-   Position ptGPS;
+   Satellite GPS;
    Position ptStar[100];
    Position ptUpperRight;
 
@@ -69,6 +80,8 @@ public:
    double angleShip;
    double angleEarth;
 };
+
+
 
 /*************************************
  * All the interesting work happens here, when
@@ -102,14 +115,14 @@ void callBack(const Interface *pUI, void *p)
    //
 
    // rotate the earth
-   pDemo->angleEarth += 0.01;
-   pDemo->angleShip += 0.02;
+   pDemo->angleEarth += -0.0005;
+   pDemo->angleShip += 0.01;
    pDemo->phaseStar++;
 
    //
    // draw everything
    //
-
+   Physics pys;
    Position pt;
    ogstream gout(pt);
 
@@ -119,7 +132,29 @@ void callBack(const Interface *pUI, void *p)
    gout.drawSputnik   (pDemo->ptSputnik,    pDemo->angleShip);
    gout.drawStarlink  (pDemo->ptStarlink,   pDemo->angleShip);
    gout.drawShip      (pDemo->ptShip,       pDemo->angleShip, pUI->isSpace());*/
-   gout.drawGPS(pDemo->ptGPS, pDemo->angleShip);
+
+
+   double gravityOnEarth = 9.80665; // m/s^2
+   double earthRadius = 6378000;
+   //double hieght = pys.HtAboveEarth(pDemo->GPS.pt.getMetersX(), pDemo->GPS.pt.getMetersY(), earthRadius);
+   double height = 35786000;
+   double gravityAtHieght = pys.gravityEquation(gravityOnEarth, earthRadius, height);
+   double angle = pys.DirectionOfGravity(0, 0, pDemo->GPS.pt.getMetersX(), pDemo->GPS.pt.getMetersY());
+   double ddy = pys.HorizontalCompAcceleration(gravityAtHieght, angle);
+   double ddx = pys.VerticalCompAcceleration(gravityAtHieght, angle);
+   pDemo->GPS.dx = pys.HorizontalVelWConstAccel(pDemo->GPS.dx0, ddx, 48);
+   pDemo->GPS.dy = pys.VerticalVelWConstAccel(pDemo->GPS.dy0, ddy, 48);
+   pDemo->GPS.dx0 = pDemo->GPS.dx;
+   pDemo->GPS.dy0 = pDemo->GPS.dy;
+   pDemo->GPS.pt.addMetersX(pDemo->GPS.dx);
+   pDemo->GPS.pt.addMetersY(pDemo->GPS.dy);
+
+
+
+  // double totalAccel = 
+   //double horizontalComAcc = pys.HorizontalCompAcceleration()
+
+   gout.drawGPS(pDemo->GPS.pt, pDemo->angleShip);
 
    // draw parts
    // pt.setPixelsX(pDemo->ptCrewDragon.getPixelsX() + 20);
@@ -128,8 +163,7 @@ void callBack(const Interface *pUI, void *p)
    // pt.setPixelsX(pDemo->ptHubble.getPixelsX() + 20);
    // pt.setPixelsY(pDemo->ptHubble.getPixelsY() + 20);
    // gout.drawHubbleLeft(pt, pDemo->angleShip);      // notice only two parameters are set
-   pt.setPixelsX(pDemo->ptGPS.getPixelsX() + 20);
-   pt.setPixelsY(pDemo->ptGPS.getPixelsY() + 20);
+ 
    // gout.drawGPSCenter(pt, pDemo->angleShip);       // notice only two parameters are set
    // pt.setPixelsX(pDemo->ptStarlink.getPixelsX() + 20);
    // pt.setPixelsY(pDemo->ptStarlink.getPixelsY() + 20);
