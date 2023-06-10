@@ -136,12 +136,12 @@ void callBack(const Interface *pUI, void *p)
 
    double gravityOnEarth = 9.80665; // m/s^2
    double earthRadius = 6378000;
-   //double hieght = pys.HtAboveEarth(pDemo->GPS.pt.getMetersX(), pDemo->GPS.pt.getMetersY(), earthRadius);
+   //double height = pys.HtAboveEarth(pDemo->GPS.pt.getMetersX(), pDemo->GPS.pt.getMetersY(), earthRadius);
    double height = 35786000;
-   double gravityAtHieght = pys.gravityEquation(gravityOnEarth, earthRadius, height);
+   double gravityAtHeight = pys.gravityEquation(gravityOnEarth, earthRadius, height);
    double angle = pys.DirectionOfGravity(0, 0, pDemo->GPS.pt.getMetersX(), pDemo->GPS.pt.getMetersY());
-   double ddy = pys.HorizontalCompAcceleration(gravityAtHieght, angle);
-   double ddx = pys.VerticalCompAcceleration(gravityAtHieght, angle);
+   double ddy = pys.HorizontalCompAcceleration(gravityAtHeight, angle);
+   double ddx = pys.VerticalCompAcceleration(gravityAtHeight, angle);
    pDemo->GPS.dx = pys.HorizontalVelWConstAccel(pDemo->GPS.dx0, ddx, 48);
    pDemo->GPS.dy = pys.VerticalVelWConstAccel(pDemo->GPS.dy0, ddy, 48);
    pDemo->GPS.dx0 = pDemo->GPS.dx;
