@@ -1,21 +1,20 @@
 ﻿  Acceleration.cpp
+  Lab07.cpp
+  Velocity.cpp
   dragon.cpp
   game.cpp
-C:\Users\offic\Documents\GitHub\231Orbit\game.cpp(212,58): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\offic\Documents\GitHub\231Orbit\game.cpp(196,58): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   gps.cpp
   hubble.cpp
-  Lab07.cpp
   position.cpp
   projectile.cpp
   satellite.cpp
   ship.cpp
   sputnik1.cpp
-  star.cpp
   starlink.cpp
   test.cpp
-C:\Users\offic\Documents\GitHub\231Orbit\testSatellite.h(90,25): warning C4553: '==': result of expression not used; did you intend '='?
+C:\Users\offic\Documents\GitHub\231Orbit\testSatellite.h(81,25): warning C4553: '==': result of expression not used; did you intend '='?
   uiDraw.cpp
   uiInteract.cpp
-  Velocity.cpp
   Generating Code...
   Lab07.vcxproj -> C:\Users\offic\Documents\GitHub\231Orbit\x64\Debug\Lab07.exe
