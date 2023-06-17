@@ -20,13 +20,13 @@ using namespace std;
  **************************************/
 void callBack(const Interface* pUI, void* p)
 {
-   // the first step is to cast the void pointer into a game object. This
-   // is the first step of every single callback function in OpenGL. 
-   Game* pGame = (Game*)p;
+    // the first step is to cast the void pointer into a game object. This
+    // is the first step of every single callback function in OpenGL. 
+    Game* pGame = (Game*)p;
 
-   pGame->input(pUI);
-   pGame->update(pUI);
-   pGame->display(pUI);
+    pGame->input(pUI);
+    pGame->update(pUI);
+    pGame->display(pUI);
 
 
 }
@@ -39,33 +39,33 @@ double Position::metersFromPixels = 40.0;
 #ifdef _WIN32_X
 #include <windows.h>
 int WINAPI wWinMain(
-   _In_ HINSTANCE hInstance,
-   _In_opt_ HINSTANCE hPrevInstance,
-   _In_ PWSTR pCmdLine,
-   _In_ int nCmdShow)
+    _In_ HINSTANCE hInstance,
+    _In_opt_ HINSTANCE hPrevInstance,
+    _In_ PWSTR pCmdLine,
+    _In_ int nCmdShow)
 #else // !_WIN32
 int main(int argc, char** argv)
 #endif // !_WIN32
 {
-   // Initialize OpenGL
-   Position ptUpperRight;
-   ptUpperRight.setZoom(128000.0 /* 128km equals 1 pixel */);
-   ptUpperRight.setPixelsX(1000.0);
-   ptUpperRight.setPixelsY(1000.0);
-   Interface ui(0, NULL,
-      "Satellite Orbit",   /* name on the window */
-      ptUpperRight);
+    // Initialize OpenGL
+    Position ptUpperRight;
+    ptUpperRight.setZoom(128000.0 /* 128km equals 1 pixel */);
+    ptUpperRight.setPixelsX(1000.0);
+    ptUpperRight.setPixelsY(1000.0);
+    Interface ui(0, NULL,
+        "Satellite Orbit",   /* name on the window */
+        ptUpperRight);
 
-   // Initialize the demo
-   Game game(ptUpperRight);
+    // Initialize the demo
+    Game game(ptUpperRight);
 
-   //Run Unit Tests
-   testRunner();
+    //Run Unit Tests
+    testRunner();
 
-   // set everything into action
-   ui.run(callBack, &game);
+    // set everything into action
+    ui.run(callBack, &game);
 
-   return 0;
+    return 0;
 }
 
 
