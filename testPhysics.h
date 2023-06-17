@@ -4,32 +4,32 @@
 #include <iostream>
 using namespace std;
 
-class testPhysics
+class TestPhysics
 {
 public:
    void run()
    {
-      testGravityHeightSeaLevel();
-      testGravityHeightAboveEarth();
+      TestSeaLevelGravity();
+      TestGravityAboveEarth();
 
-      testGravityDirectionTop();
-      testGravityDirectionRight();
-      testGravityDirectionBottom();
+      TestGravityDirectionTop();
+      TestGravityDirectionRight();
+      TestGravityDirectionBottom();
 
-      testComputeHeightAboveEarthTop();
-      testComputeHeightAboveEarthRight();
-      testComputeHeightAboveEarthMiddle();
+      TestComputeHeightAboveEarthTop();
+      TestComputeHeightAboveEarthRight();
+      TestComputeHeightAboveEarthMiddle();
    }
 
 
 private:
-   bool closeEnough(double value, double test, double tolerence) const
+   bool Range(double value, double test, double tolerence) const
    {
       double difference = value - test;
       return (difference >= -tolerence) && (difference <= tolerence);
    }
 
-   void testGravityHeightAboveEarth()
+   void TestGravityAboveEarth()
    {
 
       double height = 35768000.0;
@@ -37,11 +37,11 @@ private:
       //exercise
       gHeight = gravityHeight(height);
       //verify
-      assert( closeEnough(-0.2244, gHeight, 0.1));
+      assert( Range(-0.2244, gHeight, 0.1));
 
    } // teardown
 
-   void testGravityHeightSeaLevel()
+   void TestSeaLevelGravity()
    {
       //setup
       double height = 0.0;
@@ -49,12 +49,12 @@ private:
       //exercise
       gHeight = gravityHeight(height);
       //verify
-      assert( closeEnough(-9.8067, gHeight, 0.1));
+      assert( Range(-9.8067, gHeight, 0.1));
 
    } // teardown
 
 
-   void testGravityDirectionTop()
+   void TestGravityDirectionTop()
    {
       //setup
       double x = 0.0;
@@ -66,10 +66,10 @@ private:
       //verify
       assert(x == 0.0);
       assert(y == 1000.0);
-      assert(closeEnough(0.0, gDirection, 0.1));
+      assert(Range(0.0, gDirection, 0.1));
    } // teardown
 
-   void testGravityDirectionRight()
+   void TestGravityDirectionRight()
    {
       //setup
       double x = 1000.0;
@@ -80,10 +80,10 @@ private:
       //verify
       assert(x == 1000.0);
       assert(y == 0.0);
-      assert(closeEnough(1.571, gDirection, 0.1));
+      assert(Range(1.571, gDirection, 0.1));
    } // teardown
 
-   void testGravityDirectionBottom()
+   void TestGravityDirectionBottom()
    {
       //setup
       double x = 0.0;
@@ -94,10 +94,10 @@ private:
       //verify
       assert(x == 0.0);
       assert(y == -1000.0);
-      assert(closeEnough(3.14159265, gDirection, 0.1));
+      assert(Range(3.14159265, gDirection, 0.1));
    } // teardown
 
-   void testComputeHeightAboveEarthTop()
+   void TestComputeHeightAboveEarthTop()
    {
       //setup
       double x = 0.0;
@@ -108,10 +108,10 @@ private:
       //verify
       assert(x == 0.0);
       assert(y == 6379000.0);
-      assert(closeEnough(1000.0, height, 0.1));
+      assert(Range(1000.0, height, 0.1));
    } // teardown
 
-   void testComputeHeightAboveEarthRight()
+   void TestComputeHeightAboveEarthRight()
    {
       //setup
       double x = 6379000.0;
@@ -122,10 +122,10 @@ private:
       //verify
       assert(x == 6379000.0);
       assert(y == 0.0);
-      assert(closeEnough(1000.0, height, 0.1));
+      assert(Range(1000.0, height, 0.1));
    } // teardown
 
-   void testComputeHeightAboveEarthMiddle()
+   void TestComputeHeightAboveEarthMiddle()
    {
       //setup
       double x = 6379000.0;
@@ -136,6 +136,6 @@ private:
       //verify
       assert(x == 6379000.0);
       assert(y == 6379000.0);
-      assert(closeEnough(2643268.3, height, 1.0));
+      assert(Range(2643268.3, height, 1.0));
    } // teardown
 };

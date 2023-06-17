@@ -25,10 +25,10 @@ public:
    void run()
    {
       
-      defaultConstructor();
-      nonDefaultConstructor();
-      copyConstructor();
-      assignment();
+      DefaultConstructor();
+      NonDefaultConstructor();
+      CopyConstructor();
+      Assignment();
  
       setPixels();
       setMeters();
@@ -39,14 +39,8 @@ public:
    }
    
 private:
-   // utility funciton because floating point numbers are approximations
-   bool closeEnough(double value, double test, double tolerence) const
-   {
-      double difference = value - test;
-      return (difference >= -tolerence) && (difference <= tolerence);
-   }
 
-   void defaultConstructor() const
+   void DefaultConstructor() const
    {  // setup
       // exercise
       Position pos;
@@ -55,7 +49,7 @@ private:
       assert(pos.y == 0.0);
    }  // teardown
 
-   void nonDefaultConstructor() const
+   void NonDefaultConstructor() const
    {  // setup
       // exercise
       Position pos(3000.0, 9000.0);
@@ -64,7 +58,7 @@ private:
       assert(pos.y == 9000.0);
    }  // teardown
 
-   void copyConstructor() const
+   void CopyConstructor() const
    {  // setup
       Position pos1;
       pos1.x = 4000.0;
@@ -78,7 +72,7 @@ private:
       assert(pos2.y == 2000.0);
    }  // teardown
 
-   void assignment() const
+   void Assignment() const
    {  // setup
       Position pos1;
       pos1.x = 4000.0;
