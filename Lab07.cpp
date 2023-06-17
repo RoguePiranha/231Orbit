@@ -1,85 +1,13 @@
-/*************************************************************
- * 1. Name:
- *      Demo
- * 2. Assignment Name:
- *      Lab 07: Orbit Simulator
- * 3. Assignment Description:
- *      Simulate satellites orbiting the earth
- * 4. What was the hardest part? Be as specific as possible.
- *      ??
- * 5. How long did it take for you to complete the assignment?
- *      ??
- *****************************************************************/
-
-#include <cassert>      // for ASSERT
-#include "uiInteract.h" // for INTERFACE
-#include "uiDraw.h"     // for RANDOM and DRAW*
-#include "position.h"   // for POINT
-#include "physics.h"
+#include <cassert>        // for ASSERT
+#include "uiInteract.h"   // for INTERFACE
+#include "uiDraw.h"       // for RANDOM and DRAW*
+#include "position.h"     // for 
+#include "test.h"
+#include <cmath>
+#define _USE_MATH_DEFINES //PI
+#include <math.h>
+#include "game.h"
 using namespace std;
-
-/*************************************************************************
- * Demo
- * Test structure to capture the LM that will move around the screen
- *************************************************************************/
-class Satellite
-{
-public:
-    Position pt;
-    double dx0 = -2680 * 8;
-    double dy0 = 1550 * 8;
-    double dx;
-    double dy;
-};
-
-class Demo
-{
-public:
-   Demo(Position ptUpperRight) : ptUpperRight(ptUpperRight)
-   {
-      /*ptHubble.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
-      ptHubble.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
-
-      ptSputnik.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
-      ptSputnik.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
-
-      ptStarlink.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
-      ptStarlink.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
-
-      ptCrewDragon.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
-      ptCrewDragon.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
-
-      ptShip.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
-      ptShip.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));*/
-
-      GPS.pt.setMetersX(21082000);
-      GPS.pt.setMetersY(36515095);
-
-      for (int i = 0; i < 100; i++)
-      {
-         ptStar[i].setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
-         ptStar[i].setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
-      }
-
-      angleShip = 0.0;
-      angleEarth = 0.0;
-      phaseStar = 0;
-   }
-
-   // Position ptHubble;
-   // Position ptSputnik;
-   // Position ptStarlink;
-   // Position ptCrewDragon;
-   // Position ptShip;
-   Satellite GPS;
-   Position ptStar[100];
-   Position ptUpperRight;
-
-   unsigned char phaseStar;
-
-   double angleShip;
-   double angleEarth;
-};
 
 
 
@@ -90,102 +18,17 @@ public:
  * engine will wait until the proper amount of
  * time has passed and put the drawing on the screen.
  **************************************/
-void callBack(const Interface *pUI, void *p)
+void callBack(const Interface* pUI, void* p)
 {
    // the first step is to cast the void pointer into a game object. This
-   // is the first step of every single callback function in OpenGL.
-   Demo *pDemo = (Demo *)p;
+   // is the first step of every single callback function in OpenGL. 
+   Game* pGame = (Game*)p;
 
-   //
-   // accept input
-   //
-
-   // move by a little
-   /*if (pUI->isUp())
-      pDemo->ptShip.addPixelsY(1.0);
-   if (pUI->isDown())
-      pDemo->ptShip.addPixelsY(-1.0);
-   if (pUI->isLeft())
-      pDemo->ptShip.addPixelsX(-1.0);
-   if (pUI->isRight())
-      pDemo->ptShip.addPixelsX(1.0);*/
-
-   //
-   // perform all the game logic
-   //
-
-   // rotate the earth
-   pDemo->angleEarth += -0.0005;
-   pDemo->angleShip += 0.01;
-   pDemo->phaseStar++;
-
-   //
-   // draw everything
-   //
-   Physics pys;
-   Position pt;
-   ogstream gout(pt);
-
-   // draw satellites
-   /*gout.drawCrewDragon(pDemo->ptCrewDragon, pDemo->angleShip);
-   gout.drawHubble    (pDemo->ptHubble,     pDemo->angleShip);
-   gout.drawSputnik   (pDemo->ptSputnik,    pDemo->angleShip);
-   gout.drawStarlink  (pDemo->ptStarlink,   pDemo->angleShip);
-   gout.drawShip      (pDemo->ptShip,       pDemo->angleShip, pUI->isSpace());*/
+   pGame->input(pUI);
+   pGame->update(pUI);
+   pGame->display(pUI);
 
 
-   double gravityOnEarth = 9.80665; // m/s^2
-   double earthRadius = 6378000;
-   //double hieght = pys.HtAboveEarth(pDemo->GPS.pt.getMetersX(), pDemo->GPS.pt.getMetersY(), earthRadius);
-   double height = 35786000;
-   double gravityAtHieght = pys.gravityEquation(gravityOnEarth, earthRadius, height);
-   double angle = pys.DirectionOfGravity(0, 0, pDemo->GPS.pt.getMetersX(), pDemo->GPS.pt.getMetersY());
-   double ddy = pys.HorizontalCompAcceleration(gravityAtHieght, angle);
-   double ddx = pys.VerticalCompAcceleration(gravityAtHieght, angle);
-   pDemo->GPS.dx = pys.HorizontalVelWConstAccel(pDemo->GPS.dx0, ddx, 48);
-   pDemo->GPS.dy = pys.VerticalVelWConstAccel(pDemo->GPS.dy0, ddy, 48);
-   pDemo->GPS.dx0 = pDemo->GPS.dx;
-   pDemo->GPS.dy0 = pDemo->GPS.dy;
-   pDemo->GPS.pt.addMetersX(pDemo->GPS.dx);
-   pDemo->GPS.pt.addMetersY(pDemo->GPS.dy);
-
-
-
-  // double totalAccel = 
-   //double horizontalComAcc = pys.HorizontalCompAcceleration()
-
-   gout.drawGPS(pDemo->GPS.pt, pDemo->angleShip);
-
-   // draw parts
-   // pt.setPixelsX(pDemo->ptCrewDragon.getPixelsX() + 20);
-   // pt.setPixelsY(pDemo->ptCrewDragon.getPixelsY() + 20);
-   // gout.drawCrewDragonRight(pt, pDemo->angleShip); // notice only two parameters are set
-   // pt.setPixelsX(pDemo->ptHubble.getPixelsX() + 20);
-   // pt.setPixelsY(pDemo->ptHubble.getPixelsY() + 20);
-   // gout.drawHubbleLeft(pt, pDemo->angleShip);      // notice only two parameters are set
- 
-   // gout.drawGPSCenter(pt, pDemo->angleShip);       // notice only two parameters are set
-   // pt.setPixelsX(pDemo->ptStarlink.getPixelsX() + 20);
-   // pt.setPixelsY(pDemo->ptStarlink.getPixelsY() + 20);
-   // gout.drawStarlinkArray(pt, pDemo->angleShip);   // notice only two parameters are set
-
-   // draw fragments
-   /* pt.setPixelsX(pDemo->ptSputnik.getPixelsX() + 20);
-    pt.setPixelsY(pDemo->ptSputnik.getPixelsY() + 20);
-    gout.drawFragment(pt, pDemo->angleShip);
-    pt.setPixelsX(pDemo->ptShip.getPixelsX() + 20);
-    pt.setPixelsY(pDemo->ptShip.getPixelsY() + 20);
-    gout.drawFragment(pt, pDemo->angleShip);*/
-
-   // draw a single star
-   for (Position star : pDemo->ptStar)
-   {
-      gout.drawStar(star, pDemo->phaseStar);
-   }
-
-   // draw the earth
-   pt.setMeters(0.0, 0.0);
-   gout.drawEarth(pt, pDemo->angleEarth);
 }
 
 double Position::metersFromPixels = 40.0;
@@ -196,12 +39,12 @@ double Position::metersFromPixels = 40.0;
 #ifdef _WIN32_X
 #include <windows.h>
 int WINAPI wWinMain(
-    _In_ HINSTANCE hInstance,
-    _In_opt_ HINSTANCE hPrevInstance,
-    _In_ PWSTR pCmdLine,
-    _In_ int nCmdShow)
-#else  // !_WIN32
-int main(int argc, char **argv)
+   _In_ HINSTANCE hInstance,
+   _In_opt_ HINSTANCE hPrevInstance,
+   _In_ PWSTR pCmdLine,
+   _In_ int nCmdShow)
+#else // !_WIN32
+int main(int argc, char** argv)
 #endif // !_WIN32
 {
    // Initialize OpenGL
@@ -210,14 +53,19 @@ int main(int argc, char **argv)
    ptUpperRight.setPixelsX(1000.0);
    ptUpperRight.setPixelsY(1000.0);
    Interface ui(0, NULL,
-                "Demo", /* name on the window */
-                ptUpperRight);
+      "Satellite Orbit",   /* name on the window */
+      ptUpperRight);
 
    // Initialize the demo
-   Demo demo(ptUpperRight);
+   Game game(ptUpperRight);
+
+   //Run Unit Tests
+   testRunner();
 
    // set everything into action
-   ui.run(callBack, &demo);
+   ui.run(callBack, &game);
 
    return 0;
 }
+
+

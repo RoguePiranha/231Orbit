@@ -9,6 +9,8 @@
 
 #include "test.h"
 #include "testPosition.h"
+#include "testSatellite.h"
+#include "testPhysics.h"
 
 /*****************************************************************
  * TEST RUNNER
@@ -17,4 +19,8 @@
 void testRunner()
 {
    TestPosition().run();
+   testSatellite().run();
+   testPhysics().run();
+
+   cout << "All Tests have passed.  Success!!!" << endl;
 }

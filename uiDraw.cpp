@@ -14,8 +14,6 @@
 #include <sstream>    // convert an integer into text
 #include <cassert>    // I feel the need... the need for asserts
 #include <time.h>     // for clock
-#include "physics.h"
-#include "position.h"
 
 
 #ifdef __APPLE__
@@ -211,11 +209,13 @@ void ogstream :: flush()
  * Draw a projectile on the screen at a given point.
  *   INPUT  pt     The location of the projectile
  *************************************************************************/
-void ogstream::drawProjectile(const Position& pt)
+void drawProjectile(const Position& pt)
 {
    ColorRect rects[] =
    {
-      {1,1, -1,1, -1,-1, 1,-1, RGB_WHITE },
+      //{1,1, -1,1, -1,-1, 1,-1, RGB_WHITE }
+
+      {2,2, -2,2, -2,-2, 2,-2, RGB_WHITE },
    };
 
    for (int i = 0; i < sizeof(rects) / sizeof(ColorRect); i++)
@@ -228,7 +228,7 @@ void ogstream::drawProjectile(const Position& pt)
  *   INPUT  center    The location of the fragment
  *          rotation  Which angle it is pointed
  *************************************************************************/
-void ogstream::drawFragment(const Position& center, double rotation)
+void drawFragment(const Position& center, double rotation)
 {
    ColorRect rects[] =
    {
@@ -245,7 +245,7 @@ void ogstream::drawFragment(const Position& center, double rotation)
  *  INPUT center    The position of the ship
  *        rotation  Which direction it is point
  *************************************************************************/
-void ogstream::drawCrewDragonCenter(const Position& center, double rotation)
+void drawCrewDragonCenter(const Position& center, double rotation)
 {
    ColorRect rects[] = 
    {
@@ -267,7 +267,7 @@ void ogstream::drawCrewDragonCenter(const Position& center, double rotation)
  *        offset    For pieces of the satellite, this is the relative position of the center
  *                  of rotation when it is connected to the main satellite
  *************************************************************************/
-void ogstream::drawCrewDragonRight(const Position& center, double rotation, const Position& offset)
+void drawCrewDragonRight(const Position& center, double rotation, const Position& offset)
 {
    ColorRect rects[] =
    {
@@ -288,7 +288,7 @@ void ogstream::drawCrewDragonRight(const Position& center, double rotation, cons
  *        offset    For pieces of the satellite, this is the relative position of the center
  *                  of rotation when it is connected to the main satellite
  *************************************************************************/
-void ogstream::drawCrewDragonLeft(const Position& center, double rotation, const Position& offset)
+void drawCrewDragonLeft(const Position& center, double rotation, const Position& offset)
 {
    ColorRect rects[] =
    {
@@ -308,7 +308,7 @@ void ogstream::drawCrewDragonLeft(const Position& center, double rotation, const
  *  INPUT center    The position of the ship
  *        rotation  Which direction it is point
  *************************************************************************/
-void ogstream::drawCrewDragon(const Position& center, double rotation)
+void drawCrewDragon(const Position& center, double rotation)
 {
    drawCrewDragonCenter(center, rotation);
 
@@ -329,7 +329,7 @@ void ogstream::drawCrewDragon(const Position& center, double rotation)
  *  INPUT center    The position of the ship
  *        rotation  Which direction it is point
  *************************************************************************/
-void ogstream::drawSputnik(const Position& center, double rotation)
+void drawSputnik(const Position& center, double rotation)
 {
    // draw the sphere                                               
    const PT pointsSphere[] =
@@ -360,140 +360,6 @@ void ogstream::drawSputnik(const Position& center, double rotation)
    glEnd();
 }
 
-///************************************************************************
-// * DRAW GPS Left
-// * Draw a GPS satellite left solar array on the screen
-// *  INPUT center    The position of the ship
-// *        rotation  Which direction it is point
-// *        offset    For pieces of the satellite, this is the relative position of the center
-// *                  of rotation when it is connected to the main satellite
-// *************************************************************************/
-//void ogstream::drawGPSLeft(const Position& center, double rotation, const Position& offset)
-//{
-//   ColorRect rects[] =
-//   {
-//      {-6,5,  6,5,  6,1,  -6,1,  RGB_WHITE},
-//      {-6,0,  6,0,  6,-4, -6,-4, RGB_WHITE},
-//      {-5,4,  5,4,  5,2,  -5,2,  RGB_DEEP_BLUE },
-//      {-5,-1, 5,-1, 5,-3, -5,-3, RGB_DEEP_BLUE }
-//   };
-//
-//   for (int i = 0; i < sizeof(rects) / sizeof(ColorRect); i++)
-//      glDrawRect(center, offset, rects[i], rotation);
-//
-//   // draw the line connecting the solar array to the rest of the ship
-//   glBegin(GL_LINE_STRIP);
-//   glColor(RGB_WHITE);
-//   glVertexPoint(rotate(center,
-//                        3.0 + offset.getPixelsX(),
-//                        4.0 + offset.getPixelsY(),
-//                        rotation));
-//   glVertexPoint(rotate(center,
-//                        0.0 + offset.getPixelsX(),
-//                        8.0 + offset.getPixelsY(),
-//                        rotation));
-//   glVertexPoint(rotate(center,
-//                        -3.0 + offset.getPixelsX(),
-//                        4.0 + offset.getPixelsY(),
-//                        rotation));
-//   glEnd();
-//}
-//
-///************************************************************************
-// * DRAW GPS Right
-// * Draw a GPS satellite right solar array on the screen
-// *  INPUT center    The position of the ship
-// *        rotation  Which direction it is point
-// *        offset    For pieces of the satellite, this is the relative position of the center
-// *                  of rotation when it is connected to the main satellite
-// *************************************************************************/
-//void ogstream::drawGPSRight(const Position& center, double rotation, const Position& offset)
-//{
-//
-//   ColorRect rects[] =
-//   {
-//      {-6,-5, 6,-5, 6,-1, -6,-1,  RGB_WHITE},
-//      {-6,0,  6,0,  6,4,  -6,4,   RGB_WHITE},
-//      {-5,-4, 5,-4, 5,-2, -5,-2,  RGB_DEEP_BLUE },
-//      {-5,1,  5,1,  5,3,  -5,3,   RGB_DEEP_BLUE }
-//   };
-//
-//   for (int i = 0; i < sizeof(rects) / sizeof(ColorRect); i++)
-//      glDrawRect(center, offset, rects[i], rotation);
-//
-//   // draw the line connecting the solar array to the rest of the ship
-//   glBegin(GL_LINE_STRIP);
-//   glColor(RGB_WHITE);
-//   glVertexPoint(rotate(center,
-//                        3.0 + offset.getPixelsX(),
-//                        -4.0 + offset.getPixelsY(),
-//                        rotation));
-//   glVertexPoint(rotate(center,
-//                        0.0 + offset.getPixelsX(),
-//                        -8.0 + offset.getPixelsY(),
-//                        rotation));
-//   glVertexPoint(rotate(center,
-//                        -3.0 + offset.getPixelsX(),
-//                        -4.0 + offset.getPixelsY(),
-//                        rotation));
-//   glEnd();
-//
-//}
-//
-///************************************************************************
-// * DRAW GPS Center
-// * Draw the main part of the GPS satellite
-// *  INPUT center    The position of the ship
-// *        rotation  Which direction it is point
-// *************************************************************************/
-//void ogstream::drawGPSCenter(const Position& center, double rotation, Position offset)
-//{
-//    
-//   ColorRect rects[4] =
-//   {
-//      {-3,4,  4,4,  4,-4, -3,-4, RGB_GOLD  },
-//      {4,4,  -3,4, -3,-4, -4,-4, RGB_WHITE },
-//      {4,3,   7,3,   7,1,   4,1, RGB_GREY  },
-//      {4,-3, 7,-3,  7,-1,  4,-1, RGB_GREY  }
-//   };
-//
-//   for (int i = 0; i < sizeof(rects) / sizeof(ColorRect); i++)
-//      glDrawRect(center, offset, rects[i], rotation);
-//}
-//
-///************************************************************************
-// * DRAW GPS
-// * Draw a GPS satellite on the screen. It consists of three parts
-// *  INPUT center    The position of the ship
-// *        rotation  Which direction it is point
-// *************************************************************************/
-//void ogstream::drawGPS(const Position& center, double rotation)
-//{
-//    Position offset;
-//    offset.addPixelsX(150);
-//    offset.addPixelsY(150);
-//   drawGPSCenter(center, rotation, offset);
-//   
-//   drawGPSCenter(center, -0.1, Position());
-//   
-//   Position posRight;
-//   posRight.setPixelsX(150.0);
-//   posRight.setPixelsY(162.0);
-//   drawGPSRight(center, rotation, posRight);
-//   
-//   posRight.setPixelsX(0.0);
-//   posRight.setPixelsY(12.0);
-//   drawGPSRight(center, -0.1, posRight);
-//   
-//   Position posLeft;
-//   posLeft.setPixelsX(150.0);
-//   posLeft.setPixelsY(138.0);
-//   drawGPSLeft(center,  rotation, posLeft);
-//   
-//   posLeft.setPixelsX(0.0);
-//   posLeft.setPixelsY(-12.0);
-//   drawGPSLeft(center, -0.0, posLeft);
-//}
 /************************************************************************
  * DRAW GPS Left
  * Draw a GPS satellite left solar array on the screen
@@ -502,35 +368,35 @@ void ogstream::drawSputnik(const Position& center, double rotation)
  *        offset    For pieces of the satellite, this is the relative position of the center
  *                  of rotation when it is connected to the main satellite
  *************************************************************************/
-void ogstream::drawGPSLeft(const Position& center, double rotation, const Position& offset)
+void drawGPSLeft(const Position& center, double rotation, const Position& offset)
 {
-    ColorRect rects[] =
-    {
-       {-6,5,  6,5,  6,1,  -6,1,  RGB_WHITE},
-       {-6,0,  6,0,  6,-4, -6,-4, RGB_WHITE},
-       {-5,4,  5,4,  5,2,  -5,2,  RGB_DEEP_BLUE },
-       {-5,-1, 5,-1, 5,-3, -5,-3, RGB_DEEP_BLUE }
-    };
+   ColorRect rects[] =
+   {
+      {-6,5,  6,5,  6,1,  -6,1,  RGB_WHITE},
+      {-6,0,  6,0,  6,-4, -6,-4, RGB_WHITE},
+      {-5,4,  5,4,  5,2,  -5,2,  RGB_DEEP_BLUE },
+      {-5,-1, 5,-1, 5,-3, -5,-3, RGB_DEEP_BLUE }
+   };
 
-    for (int i = 0; i < sizeof(rects) / sizeof(ColorRect); i++)
-        glDrawRect(center, offset, rects[i], rotation);
+   for (int i = 0; i < sizeof(rects) / sizeof(ColorRect); i++)
+      glDrawRect(center, offset, rects[i], rotation);
 
-    // draw the line connecting the solar array to the rest of the ship
-    glBegin(GL_LINE_STRIP);
-    glColor(RGB_WHITE);
-    glVertexPoint(rotate(center,
-        3.0 + offset.getPixelsX(),
-        4.0 + offset.getPixelsY(),
-        rotation));
-    glVertexPoint(rotate(center,
-        0.0 + offset.getPixelsX(),
-        8.0 + offset.getPixelsY(),
-        rotation));
-    glVertexPoint(rotate(center,
-        -3.0 + offset.getPixelsX(),
-        4.0 + offset.getPixelsY(),
-        rotation));
-    glEnd();
+   // draw the line connecting the solar array to the rest of the ship
+   glBegin(GL_LINE_STRIP);
+   glColor(RGB_WHITE);
+   glVertexPoint(rotate(center,
+                        3.0 + offset.getPixelsX(),
+                        4.0 + offset.getPixelsY(),
+                        rotation));
+   glVertexPoint(rotate(center,
+                        0.0 + offset.getPixelsX(),
+                        8.0 + offset.getPixelsY(),
+                        rotation));
+   glVertexPoint(rotate(center,
+                        -3.0 + offset.getPixelsX(),
+                        4.0 + offset.getPixelsY(),
+                        rotation));
+   glEnd();
 }
 
 /************************************************************************
@@ -541,35 +407,35 @@ void ogstream::drawGPSLeft(const Position& center, double rotation, const Positi
  *        offset    For pieces of the satellite, this is the relative position of the center
  *                  of rotation when it is connected to the main satellite
  *************************************************************************/
-void ogstream::drawGPSRight(const Position& center, double rotation, const Position& offset)
+void drawGPSRight(const Position& center, double rotation, const Position& offset)
 {
-    ColorRect rects[] =
-    {
-       {-6,-5, 6,-5, 6,-1, -6,-1,  RGB_WHITE},
-       {-6,0,  6,0,  6,4,  -6,4,   RGB_WHITE},
-       {-5,-4, 5,-4, 5,-2, -5,-2,  RGB_DEEP_BLUE },
-       {-5,1,  5,1,  5,3,  -5,3,   RGB_DEEP_BLUE }
-    };
+   ColorRect rects[] =
+   {
+      {-6,-5, 6,-5, 6,-1, -6,-1,  RGB_WHITE},
+      {-6,0,  6,0,  6,4,  -6,4,   RGB_WHITE},
+      {-5,-4, 5,-4, 5,-2, -5,-2,  RGB_DEEP_BLUE },
+      {-5,1,  5,1,  5,3,  -5,3,   RGB_DEEP_BLUE }
+   };
 
-    for (int i = 0; i < sizeof(rects) / sizeof(ColorRect); i++)
-        glDrawRect(center, offset, rects[i], rotation);
+   for (int i = 0; i < sizeof(rects) / sizeof(ColorRect); i++)
+      glDrawRect(center, offset, rects[i], rotation);
 
-    // draw the line connecting the solar array to the rest of the ship
-    glBegin(GL_LINE_STRIP);
-    glColor(RGB_WHITE);
-    glVertexPoint(rotate(center,
-        3.0 + offset.getPixelsX(),
-        -4.0 + offset.getPixelsY(),
-        rotation));
-    glVertexPoint(rotate(center,
-        0.0 + offset.getPixelsX(),
-        -8.0 + offset.getPixelsY(),
-        rotation));
-    glVertexPoint(rotate(center,
-        -3.0 + offset.getPixelsX(),
-        -4.0 + offset.getPixelsY(),
-        rotation));
-    glEnd();
+   // draw the line connecting the solar array to the rest of the ship
+   glBegin(GL_LINE_STRIP);
+   glColor(RGB_WHITE);
+   glVertexPoint(rotate(center,
+                        3.0 + offset.getPixelsX(),
+                        -4.0 + offset.getPixelsY(),
+                        rotation));
+   glVertexPoint(rotate(center,
+                        0.0 + offset.getPixelsX(),
+                        -8.0 + offset.getPixelsY(),
+                        rotation));
+   glVertexPoint(rotate(center,
+                        -3.0 + offset.getPixelsX(),
+                        -4.0 + offset.getPixelsY(),
+                        rotation));
+   glEnd();
 
 }
 
@@ -579,18 +445,18 @@ void ogstream::drawGPSRight(const Position& center, double rotation, const Posit
  *  INPUT center    The position of the ship
  *        rotation  Which direction it is point
  *************************************************************************/
-void ogstream::drawGPSCenter(const Position& center, double rotation)
+void drawGPSCenter(const Position& center, double rotation)
 {
-    ColorRect rects[4] =
-    {
-       {-3,4,  4,4,  4,-4, -3,-4, RGB_GOLD  },
-       {4,4,  -3,4, -3,-4, -4,-4, RGB_WHITE },
-       {4,3,   7,3,   7,1,   4,1, RGB_GREY  },
-       {4,-3, 7,-3,  7,-1,  4,-1, RGB_GREY  }
-    };
+   ColorRect rects[4] =
+   {
+      {-3,4,  4,4,  4,-4, -3,-4, RGB_GOLD  },
+      {4,4,  -3,4, -3,-4, -4,-4, RGB_WHITE },
+      {4,3,   7,3,   7,1,   4,1, RGB_GREY  },
+      {4,-3, 7,-3,  7,-1,  4,-1, RGB_GREY  }
+   };
 
-    for (int i = 0; i < sizeof(rects) / sizeof(ColorRect); i++)
-        glDrawRect(center, Position(), rects[i], rotation);
+   for (int i = 0; i < sizeof(rects) / sizeof(ColorRect); i++)
+      glDrawRect(center, Position(), rects[i], rotation);
 }
 
 /************************************************************************
@@ -599,21 +465,20 @@ void ogstream::drawGPSCenter(const Position& center, double rotation)
  *  INPUT center    The position of the ship
  *        rotation  Which direction it is point
  *************************************************************************/
-void ogstream::drawGPS(const Position& center, double rotation)
+void drawGPS(const Position& center, double rotation)
 {
-    drawGPSCenter(center, rotation);
-
-    Position posRight;
-    posRight.setPixelsX(0.0);
-    posRight.setPixelsY(12.0);
-    drawGPSRight(center, rotation, posRight);
-
-    Position posLeft;
-    posLeft.setPixelsX(0.0);
-    posLeft.setPixelsY(-12.0);
-    drawGPSLeft(center, rotation, posLeft);
+   drawGPSCenter(center, rotation);
+   
+   Position posRight;
+   posRight.setPixelsX(0.0);
+   posRight.setPixelsY(12.0);
+   drawGPSRight(center, rotation, posRight);
+   
+   Position posLeft;
+   posLeft.setPixelsX(0.0);
+   posLeft.setPixelsY(-12.0);
+   drawGPSLeft(center,  rotation, posLeft);
 }
-
 
 /************************************************************************
  * DRAW Hubble Telescope
@@ -623,7 +488,7 @@ void ogstream::drawGPS(const Position& center, double rotation)
  *        offset    For pieces of the satellite, this is the relative position of the center
  *                  of rotation when it is connected to the main satellite
  *************************************************************************/
-void ogstream::drawHubbleTelescope(const Position& center, double rotation, const Position& offset)
+void drawHubbleTelescope(const Position& center, double rotation, const Position& offset)
 {
    ColorRect rects[] =
    {
@@ -644,7 +509,7 @@ void ogstream::drawHubbleTelescope(const Position& center, double rotation, cons
  *        offset    For pieces of the satellite, this is the relative position of the center
  *                  of rotation when it is connected to the main satellite
  *************************************************************************/
-void ogstream::drawHubbleComputer(const Position& center, double rotation, const Position& offset)
+void drawHubbleComputer(const Position& center, double rotation, const Position& offset)
 {
    ColorRect rects[] =
    {
@@ -666,7 +531,7 @@ void ogstream::drawHubbleComputer(const Position& center, double rotation, const
  *        offset    For pieces of the satellite, this is the relative position of the center
  *                  of rotation when it is connected to the main satellite
  *************************************************************************/
-void ogstream::drawHubbleLeft(const Position& center, double rotation, const Position& offset)
+void drawHubbleLeft(const Position& center, double rotation, const Position& offset)
 {
    ColorRect rects[] =
    {
@@ -701,7 +566,7 @@ void ogstream::drawHubbleLeft(const Position& center, double rotation, const Pos
  *        offset    For pieces of the satellite, this is the relative position of the center
  *                  of rotation when it is connected to the main satellite
  *************************************************************************/
-void ogstream::drawHubbleRight(const Position& center, double rotation, const Position& offset)
+void drawHubbleRight(const Position& center, double rotation, const Position& offset)
 {
    ColorRect rects[] =
    {
@@ -733,7 +598,7 @@ void ogstream::drawHubbleRight(const Position& center, double rotation, const Po
  *  INPUT center    The position of the ship
  *        rotation  Which direction it is point
  *************************************************************************/
-void ogstream::drawHubble(const Position& center, double rotation)
+void drawHubble(const Position& center, double rotation)
 {
    Position posTelescope;
    posTelescope.setPixelsX(2.0);
@@ -764,7 +629,7 @@ void ogstream::drawHubble(const Position& center, double rotation)
  *        offset    For pieces of the satellite, this is the relative position of the center
  *                  of rotation when it is connected to the main satellite
  *************************************************************************/
-void ogstream::drawStarlinkBody(const Position& center, double rotation, const Position& offset)
+void drawStarlinkBody(const Position& center, double rotation, const Position& offset)
 {
    ColorRect rects[] =
    {
@@ -785,7 +650,7 @@ void ogstream::drawStarlinkBody(const Position& center, double rotation, const P
  *        offset    For pieces of the satellite, this is the relative position of the center
  *                  of rotation when it is connected to the main satellite
  *************************************************************************/
-void ogstream::drawStarlinkArray(const Position& center, double rotation, const Position& offset)
+void drawStarlinkArray(const Position& center, double rotation, const Position& offset)
 {
    ColorRect rects[] =
    {
@@ -803,7 +668,7 @@ void ogstream::drawStarlinkArray(const Position& center, double rotation, const 
  *  INPUT center    The position of the ship
  *        rotation  Which direction it is point
  *************************************************************************/
-void ogstream::drawStarlink(const Position& center, double rotation)
+void drawStarlink(const Position& center, double rotation)
 {
    Position posBody;
    posBody.setPixelsX(-1.0);
@@ -825,7 +690,7 @@ void ogstream::drawStarlink(const Position& center, double rotation)
  *                  of rotation when it is connected to the main satellite
  *        thrust    Whether the thrusters are on
  *************************************************************************/
-void ogstream::drawShip(const Position& center, double rotation, bool thrust)
+void drawShip(const Position& center, double rotation, bool thrust)
 {
    // draw the white part of the ship                                               
    const PT pointsShipWhite[] =
@@ -874,14 +739,13 @@ void ogstream::drawShip(const Position& center, double rotation, bool thrust)
    glEnd();
 }
 
-
 /************************************************************************
  * DRAW Earth
  * Draw Earth
  *  INPUT center    The position of the ship
  *        rotation  Which direction it is point
  *************************************************************************/
-void ogstream::drawEarth(const Position& center, double rotation)
+void drawEarth(const Position& center, double rotation)
 {
    const int * colors[5] = 
    {
@@ -984,13 +848,14 @@ void ogstream::drawEarth(const Position& center, double rotation)
    return;
 }
 
+
 /************************************************************************
  * DRAW STAR
  * Draw a star that twinkles
  *   INPUT  POINT     The position of the beginning of the star
  *          PHASE     The phase of the twinkling
  *************************************************************************/
-void ogstream::drawStar(const Position& point, unsigned char phase)
+void drawStar(const Position& point, unsigned char phase)
 {
    // Get ready...
    glBegin(GL_POINTS);
@@ -1040,64 +905,6 @@ void ogstream::drawStar(const Position& point, unsigned char phase)
    glEnd();
 }
 
-/******************************************************************
- * DUMMY
- ****************************************************************/
-void ogstreamDummy::flush() { assert(false); }
-void ogstreamDummy::setPosition(const Position& pt) { assert(false); }
-ogstreamDummy& ogstreamDummy::operator = (const Position& pt) { assert(false); return *this; }
-void ogstreamDummy::drawFragment(const Position& center, double rotation) { assert(false); }
-void ogstreamDummy::drawProjectile(const Position& pt) { assert(false); }
-void ogstreamDummy::drawCrewDragon(const Position& center, double rotation) { assert(false); }
-void ogstreamDummy::drawCrewDragonRight(const Position& center, double rotation, const Position& offset) { assert(false); }
-void ogstreamDummy::drawCrewDragonLeft(const Position& center, double rotation, const Position& offset) { assert(false); }
-void ogstreamDummy::drawCrewDragonCenter(const Position& center, double rotation) { assert(false); }
-void ogstreamDummy::drawSputnik(const Position& center, double rotation) { assert(false); }
-void ogstreamDummy::drawGPS(const Position& center, double rotation) { assert(false); }
-void ogstreamDummy::drawGPSCenter(const Position& center, double rotation) { assert(false); }
-void ogstreamDummy::drawGPSRight(const Position& center, double rotation, const Position& offset) { assert(false); }
-void ogstreamDummy::drawGPSLeft(const Position& center, double rotation, const Position& offset) { assert(false); }
-void ogstreamDummy::drawHubble(const Position& center, double rotation) { assert(false); }
-void ogstreamDummy::drawHubbleComputer(const Position& center, double rotation, const Position& offset) { assert(false); }
-void ogstreamDummy::drawHubbleTelescope(const Position& center, double rotation, const Position& offset) { assert(false); }
-void ogstreamDummy::drawHubbleLeft(const Position& center, double rotation, const Position& offset) { assert(false); }
-void ogstreamDummy::drawHubbleRight(const Position& center, double rotation, const Position& offset) { assert(false); }
-void ogstreamDummy::drawStarlink(const Position& center, double rotation) { assert(false); }
-void ogstreamDummy::drawStarlinkBody(const Position& center, double rotation, const Position& offset) { assert(false); }
-void ogstreamDummy::drawStarlinkArray(const Position& center, double rotation, const Position& offset) { assert(false); }
-void ogstreamDummy::drawShip(const Position& center, double rotation, bool thrust) { assert(false); }
-void ogstreamDummy::drawEarth(const Position& center, double rotation) { assert(false); }
-void ogstreamDummy::drawStar(const Position& point, unsigned char phase) { assert(false); }
-
-
-/******************************************************************
- * FAKE
- ****************************************************************/
-void ogstreamFake::flush()                                  { assert(false); }
-void ogstreamFake::setPosition(const Position& pt)          { assert(false); }
-ogstreamFake& ogstreamFake::operator = (const Position& pt) { assert(false); return *this; }
-void ogstreamFake::drawFragment(        const Position& center, double rotation                        ) { *this << "Fragment"         << center << rotation << "\n";}
-void ogstreamFake::drawProjectile(      const Position& center                                         ) { *this << "Projectile"       << center <<             "\n"; }
-void ogstreamFake::drawCrewDragon(      const Position& center, double rotation                        ) { *this << "CrewDragon"       << center << rotation << "\n";}
-void ogstreamFake::drawCrewDragonRight( const Position& center, double rotation, const Position& offset) { *this << "CrewDragonRight"  << center << rotation << "\n"; }
-void ogstreamFake::drawCrewDragonLeft(  const Position& center, double rotation, const Position& offset) { *this << "CrewDragonLeft "  << center << rotation << "\n"; }
-void ogstreamFake::drawCrewDragonCenter(const Position& center, double rotation                        ) { *this << "CrewDragonCenter" << center << rotation << "\n"; }
-void ogstreamFake::drawSputnik(         const Position& center, double rotation                        ) { *this << "Sputnik"          << center << rotation << "\n"; }
-void ogstreamFake::drawGPS(             const Position& center, double rotation                        ) { *this << "GPS"              << center << rotation << "\n"; }
-void ogstreamFake::drawGPSCenter(       const Position& center, double rotation                        ) { *this << "GPSCenter"        << center << rotation << "\n"; }
-void ogstreamFake::drawGPSRight(        const Position& center, double rotation, const Position& offset) { *this << "GPSRight"         << center << rotation << "\n"; }
-void ogstreamFake::drawGPSLeft(         const Position& center, double rotation, const Position& offset) { *this << "GPSLeft"          << center << rotation << "\n"; }
-void ogstreamFake::drawHubble(          const Position& center, double rotation                        ) { *this << "Hubble"           << center << rotation << "\n"; }
-void ogstreamFake::drawHubbleComputer(  const Position& center, double rotation, const Position& offset) { *this << "HubbleComputer"   << center << rotation << "\n"; }
-void ogstreamFake::drawHubbleTelescope( const Position& center, double rotation, const Position& offset) { *this << "HubbleTelescope"  << center << rotation << "\n"; }
-void ogstreamFake::drawHubbleLeft(      const Position& center, double rotation, const Position& offset) { *this << "HubbleLeft"       << center << rotation << "\n"; }
-void ogstreamFake::drawHubbleRight(     const Position& center, double rotation, const Position& offset) { *this << "HubbleRight"      << center << rotation << "\n"; }
-void ogstreamFake::drawStarlink(        const Position& center, double rotation                        ) { *this << "Starlink"         << center << rotation << "\n"; }
-void ogstreamFake::drawStarlinkBody(    const Position& center, double rotation, const Position& offset) { *this << "StarlinkBody"     << center << rotation << "\n"; }
-void ogstreamFake::drawStarlinkArray(   const Position& center, double rotation, const Position& offset) { *this << "StarlinkArray"    << center << rotation << "\n"; }
-void ogstreamFake::drawShip(            const Position& center, double rotation, bool thrust           ) { *this << "Ship"             << center << rotation << "\n"; }
-void ogstreamFake::drawEarth(           const Position& center, double rotation                        ) { *this << "Earth"            << center << rotation << "\n"; }
-void ogstreamFake::drawStar(            const Position& center, unsigned char phase                    ) { *this << "Star"             << center << phase    << "\n"; }
 
 /******************************************************************
  * RANDOM

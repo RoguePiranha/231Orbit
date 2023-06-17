@@ -8,9 +8,8 @@
  *    or the location on the field.
  ************************************************************************/
 
-
 #pragma once
-
+#include "physics.h"
 #include <iostream> 
 #include <cmath>
 
@@ -38,7 +37,7 @@ public:
    double getMetersY()       const { return y;                    }
    double getPixelsX()       const { return x / metersFromPixels; }
    double getPixelsY()       const { return y / metersFromPixels; }
-
+    
    // setters
    void setMeters(double xMeters, double yMeters) {x = xMeters; y = yMeters; }
    void setMetersX(double xMeters)       { x = xMeters;           }
@@ -62,6 +61,21 @@ private:
    double y;                 // vertical position
    static double metersFromPixels;
 };
+
+/***********************************************
+* DISTANCE FORMULA
+* Finding the new position.
+* The equation is:
+*   Horizontal:
+*       x = x + dx * t + .5 * ddx * t^2
+*   Vertical:
+*       y = y + dy * t + .5 * ddy * t^2
+***********************************************/
+inline double distanceFormula(double s, double ds, double dds, double time)
+{
+   return s + (ds * time) + (.5 * dds * (time * time));
+}
+
 
 /*********************************************
  * COMPUTE DISTANCE
