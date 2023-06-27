@@ -54,6 +54,7 @@ int main(int argc, char** argv)
     //Run Unit Tests
 #ifdef DEBUG
     testRunner();
+    cout << "Tests Passed" << endl;
 #endif
 
     // set everything into action
