@@ -1,5 +1,3 @@
 C:\Users\offic\Downloads\Orbit-Simulator-master\Orbit-Simulator-master\x64\Debug\Lab07.exe
 C:\Users\offic\Documents\GitHub\231Orbit\x64\Debug\Lab07.exe
 C:\Users\akswa\OneDrive\Documents\BYU-I\2023\Spring\CSE 231\231Orbit\x64\Debug\Lab07.exe
-C:\Users\akswa\OneDrive\Documents\BYU-I\2023\Spring\CSE 231\231Orbit\x64\Debug\Lab07.exe.lastcodeanalysissucceeded
-C:\Users\akswa\OneDrive\Documents\BYU-I\2023\Spring\CSE 231\231Orbit\x64\Debug\NativeCodeAnalysis.read.1.tlog

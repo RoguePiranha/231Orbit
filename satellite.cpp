@@ -2,17 +2,17 @@
 #include "fragment.h"
 #include "projectile.h"
 
-Satellite::Satellite(double x, double y, double dx, double dy) 
+Satellite::Satellite(double x, double y, double dx, double dy)
 { 
-   pos.setMetersX(x);  
-   pos.setMetersY(y); 
-   velocity.setDX(dx); 
-   velocity.setDY(dy); 
+   pos.setMetersX(x);
+   pos.setMetersY(y);
+   velocity.setDX(dx);
+   velocity.setDY(dy);
 }
 
 void Satellite::spawnFragments(list<Satellite*>& satellites)
 {
-   Fragment*  pFragment1 = new Fragment(pos.getMetersX() + random(-6000000.0, 6000000.0), pos.getMetersY() + 3000000 + random(-6000000.0, 6000000.0), velocity.getDX(), velocity.getDY());
+   Fragment* pFragment1 = new Fragment(pos.getMetersX() + random(-6000000.0, 6000000.0), pos.getMetersY() + 3000000 + random(-6000000.0, 6000000.0), velocity.getDX(), velocity.getDY());
 
    satellites.push_back(pFragment1);
 
@@ -41,7 +41,7 @@ void Satellite::spawnProjectile(list<Satellite*>& satellites)
 void Satellite::move(double time)
 {
    Acceleration accel;
-   // Compute physicss
+   // Compute physics
    double gravity = gravityDirection(pos.getMetersX(), pos.getMetersY());
 
    double height  = computeHeightAboveEarth(pos.getMetersX(), pos.getMetersY());

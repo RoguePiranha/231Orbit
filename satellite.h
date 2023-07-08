@@ -36,8 +36,8 @@ public:
    Position getPosition()  { return pos; }
    double getRadius()      { return radius; }
    double getDecayTime()   { return decayTime; }
-   void setDeadStatus() { status = DEAD; }
-   void setBrokenStatus() { status = BROKEN; }
+   void setDeadStatus()    { status = DEAD; }
+   void setBrokenStatus()  { status = BROKEN; }
    void setPosition(Position position) { pos = position; }
    void setVelocity(Velocity vel) { velocity = vel;}
    bool updateAngle() { return angle+= 25; }
