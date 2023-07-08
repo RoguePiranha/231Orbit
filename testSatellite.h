@@ -48,7 +48,7 @@ private:
         {
         //  setup
         Satellite satellite;
-        satellite.status == ALIVE;
+        satellite.status = ALIVE;
         // exercise
         satellite.setDeadStatus();
         // verify

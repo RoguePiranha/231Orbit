@@ -20,7 +20,7 @@ void testRunner()
 {
    TestPosition().run();
    testSatellite().run();
-   testPhysics().run();
+   TestPhysics().run();
 
    cout << "All Tests have passed.  Success!!!" << endl;
 }
