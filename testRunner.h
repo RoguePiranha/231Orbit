@@ -1,9 +1,12 @@
-#ifndef testRunner_h
-#define testRunner_h
+/***********************************************************************
+ * Heaader File:
+ *    Test : Test runner
+ * Author:
+ *    Br. Helfrich
+ * Summary:
+ *    The test runner for all the unit tests
+ ************************************************************************/
 
-#include <iostream>
-using namespace std;
- 
+#pragma once
+
 void testRunner();
-
-#endif

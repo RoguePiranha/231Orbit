@@ -10,8 +10,7 @@
  *    (variables) or a mixture (objects)
  ************************************************************************/
 
-#ifndef uiDraw_h
-#define uiDraw_h
+#pragma once
 
 #include <string>     // To display text on the screen
 #include <cmath>      // for M_PI, sin() and cos()
@@ -33,150 +32,118 @@ using std::max;
 class ogstream : public std::ostringstream
 {
 public:
-   ogstream() {}
-   ogstream(const Position& pt) : pt(pt) {}
-   ~ogstream() { flush(); };
+    ogstream(const Position& pt) : pt(pt) {}
+    ~ogstream() { flush(); };
+    void flush();
 
-   // This is mostly for the text drawing stuff
-   virtual void flush();
-   virtual void setPosition(const Position& pt) { flush(); this->pt = pt; }
-   virtual ogstream& operator = (const Position& pt)
-   {
-	  setPosition(pt);
-	  return *this;
-   }
-
-   // This is specific to the orbit simulator
-   virtual void drawFragment(const Position& center, double rotation);
-   virtual void drawProjectile(const Position& pt);
-
-   virtual void drawCrewDragon(const Position& center, double rotation);
-   virtual void drawCrewDragonRight(const Position& center, double rotation, const Position& offset = Position());
-   virtual void drawCrewDragonLeft(const Position& center, double rotation, const Position& offset = Position());
-   virtual void drawCrewDragonCenter(const Position& center, double rotation);
-
-   virtual void drawSputnik(const Position& center, double rotation);
-
-   virtual void drawGPS(const Position& center, double rotation);
-   virtual void drawGPSCenter(const Position& center, double rotation);
-   virtual void drawGPSRight(const Position& center, double rotation, const Position& offset = Position());
-   virtual void drawGPSLeft(const Position& center, double rotation, const Position& offset = Position());
-
-   virtual void drawHubble(const Position &center, double rotation);
-   virtual void drawHubbleComputer(const Position& center, double rotation, const Position& offset = Position());
-   virtual void drawHubbleTelescope(const Position& center, double rotation, const Position& offset = Position());
-   virtual void drawHubbleLeft(const Position& center, double rotation, const Position& offset = Position());
-   virtual void drawHubbleRight(const Position& center, double rotation, const Position& offset = Position());
-
-   virtual void drawStarlink(const Position& center, double rotation);
-   virtual void drawStarlinkBody(const Position& center, double rotation, const Position& offset = Position());
-   virtual void drawStarlinkArray(const Position& center, double rotation, const Position& offset = Position());
-
-   virtual void drawShip(const Position& center, double rotation, bool thrust);
-
-   virtual void drawEarth(const Position& center, double rotation);
-
-   virtual void drawStar(const Position& point, unsigned char phase);
-
-protected:
-   Position pt;
+    void setPosition(const Position& pt) { flush(); this->pt = pt; }
+    ogstream& operator = (const Position& pt)
+    {
+        setPosition(pt);
+        return *this;
+    }
+private:
+    Position pt;
 };
 
-/*************************************************************************
- * GRAPHICS STREAM DUMMY
- * Better not be called!
+/************************************************************************
+ * DRAW FRAGMENT
+ * Draw a fragment on the screen.
+ *   INPUT  pt     The location of the projectile
+ *          age    The age in seconds. The younger, the brighter
  *************************************************************************/
-class ogstreamDummy : public ogstream
-{
-public:
-   ogstreamDummy(const Position& pt) {}
-   ~ogstreamDummy() { }
+void drawFragment(const Position& center, double rotation);
 
-   // This is mostly for the text drawing stuff
-   void flush();
-   void setPosition(const Position& pt);
-   ogstreamDummy& operator = (const Position& pt);
-
-   // This is specific to the orbit simulator
-   void drawFragment(const Position& center, double rotation);
-   void drawProjectile(const Position& pt);
-
-   void drawCrewDragon(const Position& center, double rotation);
-   void drawCrewDragonRight(const Position& center, double rotation, const Position& offset = Position());
-   void drawCrewDragonLeft(const Position& center, double rotation, const Position& offset = Position());
-   void drawCrewDragonCenter(const Position& center, double rotation);
-
-   void drawSputnik(const Position& center, double rotation);
-
-   void drawGPS(const Position& center, double rotation);
-   void drawGPSCenter(const Position& center, double rotation);
-   void drawGPSRight(const Position& center, double rotation, const Position& offset = Position());
-   void drawGPSLeft(const Position& center, double rotation, const Position& offset = Position());
-
-   void drawHubble(const Position& center, double rotation);
-   void drawHubbleComputer(const Position& center, double rotation, const Position& offset = Position());
-   void drawHubbleTelescope(const Position& center, double rotation, const Position& offset = Position());
-   void drawHubbleLeft(const Position& center, double rotation, const Position& offset = Position());
-   void drawHubbleRight(const Position& center, double rotation, const Position& offset = Position());
-
-   void drawStarlink(const Position& center, double rotation);
-   void drawStarlinkBody(const Position& center, double rotation, const Position& offset = Position());
-   void drawStarlinkArray(const Position& center, double rotation, const Position& offset = Position());
-
-   void drawShip(const Position& center, double rotation, bool thrust);
-
-   void drawEarth(const Position& center, double rotation);
-
-   void drawStar(const Position& point, unsigned char phase);
-};
-
-/*************************************************************************
- * GRAPHICS STREAM Fake
- * Better not be called!
+/************************************************************************
+ * DRAW PROJECTILE
+ * Draw a projectile on the screen at a given point.
+ *   INPUT  pt     The location of the projectile
  *************************************************************************/
-class ogstreamFake : public ogstream
-{
-public:
-   ogstreamFake(const Position& pt) {}
-   ~ogstreamFake() { }
+void drawProjectile(const Position& pt);
 
-   // This is mostly for the text drawing stuff
-   void flush();
-   void setPosition(const Position& pt);
-   ogstreamFake& operator = (const Position& pt);
+/************************************************************************
+ * DRAW Crew Dragon
+ * Draw a crew dragon on the screen. It consists of three components
+ *  INPUT point   The position of the ship
+ *        angle   Which direction it is pointed
+ *        offset  For pieces of the satellite, this is the relative position of the center
+ *                of rotation when it is connected to the main satellite
+ *************************************************************************/
+void drawCrewDragon(const Position& center, double rotation);
+void drawCrewDragonRight(const Position& center, double rotation, const Position& offset = Position());
+void drawCrewDragonLeft(const Position& center, double rotation, const Position& offset = Position());
+void drawCrewDragonCenter(const Position& center, double rotation);
 
-   // This is specific to the orbit simulator
-   void drawFragment(const Position& center, double rotation);
-   void drawProjectile(const Position& pt);
+/************************************************************************
+ * DRAW Sputnik
+ * Draw the satellite on the screen
+ *  INPUT point   The position of the ship
+ *        angle   Which direction it is point
+ *************************************************************************/
+void drawSputnik(const Position& center, double rotation);
 
-   void drawCrewDragon(const Position& center, double rotation);
-   void drawCrewDragonRight(const Position& center, double rotation, const Position& offset = Position());
-   void drawCrewDragonLeft(const Position& center, double rotation, const Position& offset = Position());
-   void drawCrewDragonCenter(const Position& center, double rotation);
+/************************************************************************
+ * DRAW GPS
+ * Draw a GPS satellite on the screen. It consists of three parts
+ *  INPUT point   The position of the ship
+ *        angle   Which direction it is pointed
+ *        offset  For pieces of the satellite, this is the relative position of the center
+ *                of rotation when it is connected to the main satellite
+ *************************************************************************/
+void drawGPS(const Position& center, double rotation);
+void drawGPSCenter(const Position& center, double rotation);
+void drawGPSRight(const Position& center, double rotation, const Position& offset = Position());
+void drawGPSLeft(const Position& center, double rotation, const Position& offset = Position());
 
-   void drawSputnik(const Position& center, double rotation);
+/************************************************************************
+ * DRAW Hubble
+ * Draw a Hubble satellite on the screen. It consists of 4 parts
+ *  INPUT point   The position of the ship
+ *        angle   Which direction it is ponted
+ *        offset  For pieces of the satellite, this is the relative position of the center
+ *                of rotation when it is connected to the main satellite
+ *************************************************************************/
+void drawHubble(const Position& center, double rotation);
+void drawHubbleComputer(const Position& center, double rotation, const Position& offset = Position());
+void drawHubbleTelescope(const Position& center, double rotation, const Position& offset = Position());
+void drawHubbleLeft(const Position& center, double rotation, const Position& offset = Position());
+void drawHubbleRight(const Position& center, double rotation, const Position& offset = Position());
 
-   void drawGPS(const Position& center, double rotation);
-   void drawGPSCenter(const Position& center, double rotation);
-   void drawGPSRight(const Position& center, double rotation, const Position& offset = Position());
-   void drawGPSLeft(const Position& center, double rotation, const Position& offset = Position());
+/************************************************************************
+ * DRAW Starlink
+ * Draw a Starlink satellite on the screen. It consists of 2 components
+ *  INPUT point   The position of the ship
+ *        angle   Which direction it is pointed
+ *        offset  For pieces of the satellite, this is the relative position of the center
+ *                of rotation when it is connected to the main satellite
+ *************************************************************************/
+void drawStarlink(const Position& center, double rotation);
+void drawStarlinkBody(const Position& center, double rotation, const Position& offset = Position());
+void drawStarlinkArray(const Position& center, double rotation, const Position& offset = Position());
 
-   void drawHubble(const Position& center, double rotation);
-   void drawHubbleComputer(const Position& center, double rotation, const Position& offset = Position());
-   void drawHubbleTelescope(const Position& center, double rotation, const Position& offset = Position());
-   void drawHubbleLeft(const Position& center, double rotation, const Position& offset = Position());
-   void drawHubbleRight(const Position& center, double rotation, const Position& offset = Position());
+/************************************************************************
+ * DRAW Ship
+ * Draw a spaceship on the screen
+ *  INPUT point   The position of the ship
+ *        angle   Which direction it is pointed
+ *        thrust  Whether the thrusters are on
+ *************************************************************************/
+void drawShip(const Position& center, double rotation, bool thrust);
+/************************************************************************
+ * DRAW Earth
+ * Draw Earth
+ *  INPUT point   The position of the ship
+ *        angle   Which direction it is pointed (time of day!)
+ *************************************************************************/
+void drawEarth(const Position& center, double rotation);
 
-   void drawStarlink(const Position& center, double rotation);
-   void drawStarlinkBody(const Position& center, double rotation, const Position& offset = Position());
-   void drawStarlinkArray(const Position& center, double rotation, const Position& offset = Position());
-
-   void drawShip(const Position& center, double rotation, bool thrust);
-
-   void drawEarth(const Position& center, double rotation);
-
-   void drawStar(const Position& point, unsigned char phase);
-};
+/************************************************************************
+* DRAW STAR
+* Draw a star
+*   INPUT  POINT     The position of the beginning of the star
+*          PHASE     The phase of the twinkling
+*************************************************************************/
+void drawStar(const Position& point, unsigned char phase);
 
 /******************************************************************
  * RANDOM
@@ -187,9 +154,3 @@ public:
  ****************************************************************/
 int    random(int    min, int    max);
 double random(double min, double max);
-
-
-
-
-#endif /* uiDraw_h */
-

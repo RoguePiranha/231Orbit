@@ -1,16 +1,12 @@
-﻿  acceleration.cpp
-  direction.cpp
-  orbit.cpp
-  satellite.cpp
-C:\Users\offic\Documents\GitHub\231Orbit\satellite.cpp(11,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  ship.cpp
+﻿  game.cpp
+C:\Users\offic\Documents\GitHub\231Orbit\game.cpp(196,58): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  gps.cpp
   simulator.cpp
-  testDirection.cpp
-  testHubble.cpp
+  sputnik.cpp
+  starlink.cpp
   testRunner.cpp
-  testShip.cpp
-  testVelocity.cpp
+C:\Users\offic\Documents\GitHub\231Orbit\testSatellite.h(82,26): warning C4553: '==': result of expression not used; did you intend '='?
+  uiDraw.cpp
   velocity.cpp
   Generating Code...
-  LINK : C:\Users\offic\Documents\GitHub\231Orbit\x64\Debug\Lab07.exe not found or not built by the last incremental link; performing full link
   Lab07.vcxproj -> C:\Users\offic\Documents\GitHub\231Orbit\x64\Debug\Lab07.exe

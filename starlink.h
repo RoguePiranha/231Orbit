@@ -1,66 +1,14 @@
-#ifndef starlink_h
-#define starlink_h
-
+#pragma once
 #include "satellite.h"
-#include "satelliteFragment.h"
-#include "starlinkBody.h"
-#include "starlinkArray.h"
+#include "uiDraw.h"
+#include "satellitePiece.h"
 
 class Starlink : public Satellite
 {
 public:
-	
-	Starlink(): Satellite() {
+	Starlink() {}
+	Starlink(double x, double y, double dx, double dy);
 
-		pos.setMeters(0.0, -13020000.0);
-		velocity.setDxDy(5800.0, 0.0);
-		setRadius(pos.convertToMeters(6));
-	}
-	
-	Starlink(const Starlink &rhs) : Satellite(rhs) {}
-	Starlink(double x, double y, double radius): Satellite(x, y, radius) {}
-	Starlink(const Position &pos, const Velocity &velocity): Satellite(pos, 6, velocity) {} // radius = 6px
-	
-	virtual ~Starlink() {}
-	
-	virtual bool isShip()       const { return false; }
-	virtual bool isProjectile() const { return false; }
-	virtual bool isPiece()      const { return false; }
-	virtual bool isFragment()   const { return false; }
-	
-	virtual void move(double time)
-	{
-		Acceleration aGravity = getGravity();
-			
-		velocity.updateVelocity(aGravity, time);
-		updatePosition(aGravity, time);
-	}
-
-	// breaks into 2 pieces & 2 fragments
-	virtual void destroy(list<Satellite*> &satellites)
-	{
-		StarlinkBody *sBody = new StarlinkBody(*this, random(280, 350));
-		satellites.push_back(sBody);
-		
-		StarlinkArray *sArray = new StarlinkArray(*this, random(100, 160));
-		satellites.push_back(sArray);
-		
-		SatelliteFragment *sFragment1 = new SatelliteFragment(*this, random(0, 60));
-		satellites.push_back(sFragment1);
-		
-		SatelliteFragment *sFragment2 = new SatelliteFragment(*this, random(170, 250));
-		satellites.push_back(sFragment2);
-	}
-	
-	virtual void draw(ogstream & gout)
-	{ 
-		gout.drawStarlink(getPos(), getAngularVelocity());
-	}
-	
-	
-private: // inherits pos, direction, radius, angularVelociy, alive,
-		 // velocity, age, and lifeSpan
-	
+	void  draw()  const { drawStarlink(pos, angle); }
+	void spawnParts(list<Satellite*>& satellites);
 };
-
-#endif /* starlink_h */

@@ -1,95 +1,53 @@
-#ifndef satellite_h
-#define satellite_h
- 
-#include <list>
-#include <cmath>
+#pragma once
+#include "position.h"
+#include "uiInteract.h"
+#include "Velocity.h"
+#include "physics.h"
 #include <iostream>
-#include <iomanip>
-#include "velocity.h"
-#include "spaceObject.h"
+#include <list>
+using namespace std;
 
-const double EARTH_RADIUS = 6378000;
-const double GRAVITY = 9.8067;
+enum Status { ALIVE, DEAD, BROKEN };
+enum Type { SHIP, SATELLITE, PART, DECAYABLE };
 
-class TestSatellite;
-
-class Satellite : public SpaceObject
+class Satellite
 {
-public:
-	friend TestSatellite;
-	
-	Satellite() : SpaceObject(0.0, 0.0), velocity(0.0, 0.0), age(0.0), lifeSpan(0.0), alive(true), invisible(false) {}
-	
-	Satellite(const Satellite &rhs) : SpaceObject(rhs), velocity(rhs.getVelocity()),
-	age(rhs.getAge()), lifeSpan(rhs.getLifeSpan()), alive(true), invisible(rhs.isInvisible())  {}
-	
-	Satellite(const Satellite &s, const Direction &dir) : SpaceObject(s.pos.getMetersX(), s.pos.getMetersY(), 0.0, Direction(dir.getRadians())), velocity(s.velocity.getDx(), s.velocity.getDy()), age(0.0), lifeSpan(0.0),
-	    alive(true), invisible(false){}
-	
-	Satellite(double x, double y): SpaceObject(Position(x, y), 0.0), velocity(0.0, 0.0),
-	age(0.0), lifeSpan(0.0), alive(true), invisible(false) {}
-	
-	Satellite(double x, double y, double radius): SpaceObject(Position(x, y), radius), velocity(0.0, 0.0),
-	age(0.0), lifeSpan(0.0), alive(true), invisible(false) {}
-	
-	Satellite(const Position &pos, double radius, const Velocity &velocity) :
-	SpaceObject(pos, radius), velocity(velocity), age(0.0), lifeSpan(0.0), alive(true), invisible(false) {}
-	
-	Satellite(const Position &pos, double radius, const Velocity &velocity, const Direction &dir) :
-	SpaceObject(pos, radius, dir), velocity(velocity), age(0.0), lifeSpan(0.0), alive(true), invisible(false) {}
-	
-	virtual ~Satellite() {}
-	
-	void setVelocity(double dx, double dy)
-	{
-		velocity.setDx(dx);
-		velocity.setDy(dy);
-	}
-	
-	void setInvisible(bool status) { invisible = status;}
-	void setAlive(bool status)     { alive = status; }
-	void kill()                    { this->alive = false;  }
+	friend class testSatellite;
+	friend class DummySatellite;
+	friend class StubSatellite;
 
-	void setLifeSpan(double amount) { this->lifeSpan = amount; }
-	void computeAngularVelocity();
-	
-	Acceleration getGravity();
-	Velocity getVelocity()      const { return velocity;        }
-	double getLifeSpan()        const { return lifeSpan;        }
-	double getAltitude()        const;
-	
-	void updatePosition(const Acceleration &acGravity, double time);
-	void shiftPosition(double distance);
-	void explode();
-	
-	void increaseAge()     { age += 1;   }
-	double getAge() const  { return age; }
-	
-	bool isAlive()      const { return alive;     }
-	bool isInvisible()  const { return invisible; }
-	bool hitEarth()     const { return getAltitude() <= 0; }
-	bool pastLifeSpan() const { return age > lifeSpan;     }
-
-	virtual bool isShip()       const = 0;
-	virtual bool isProjectile() const = 0;
-	virtual bool isPiece()      const = 0;
-	virtual bool isFragment()   const = 0;
-	
-	virtual void move(double time) = 0;
-	virtual void destroy(list<Satellite*> &satellites) = 0;
-	virtual void draw(ogstream & gout)  = 0;
- 
- 	
-protected: // inherits pos, direction, radius, angularVelociy, and alive
+protected:
+	Position pos;
+	Status status = ALIVE;
+	Type type = SATELLITE;
 	Velocity velocity;
-	double age;
-	double lifeSpan;
-	bool alive;
-	bool invisible;
-   
+	double angularVelocity;
+	double radius;
+	double decayTime = 0.0;
+	double angle = 0.1;
+
+
+public:
+	Satellite() {}
+	Satellite(double x, double y) { pos.setMetersX(x);  pos.setMetersY(y); }
+	Satellite(double x, double y, double dx, double dy);
+	Status getStatus() { return status; }
+	Type getType() { return type; }
+	Position getPosition() { return pos; }
+	double getRadius() { return radius; }
+	double getDecayTime() { return decayTime; }
+	void setDeadStatus() { status = DEAD; }
+	void setBrokenStatus() { status = BROKEN; }
+	void setPosition(Position position) { pos = position; }
+	void setVelocity(Velocity vel) { velocity = vel; }
+	bool updateAngle() { return angle += 25; }
+	void updateDecayTime() { decayTime--; }
+	virtual void satelliteInput(const Interface* pUI, list<Satellite*>& satellites) {}
+	virtual void draw() const {}
+	virtual void drawSpaceShip(const Interface* pUI) const {}
+	virtual void spawnFragments(list<Satellite*>& satellites);
+	virtual void spawnProjectile(list<Satellite*>& satellites);
+	virtual void spawnParts(list<Satellite*>& satellites) {}
+	virtual void move(double time);
+	virtual void moveShip(double time, const Interface* pUI) {}
 };
-
-
-#endif /* satellite_h */
-
-

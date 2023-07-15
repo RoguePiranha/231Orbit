@@ -1,70 +1,43 @@
-#include "velocity.h"
+#include "Velocity.h"
+#include <cmath> // for sqrt
+#define _USE_MATH_DEFINES
+#include <math.h> 
 
-/*********************************************
- * GET SPEED
- * Computes the velocity speed.
- *********************************************/
-double Velocity::getSpeed() const
+
+/***********************************************************************
+ * Velocity
+ * Adds velocity based off of a given angle and speed
+ ************************************************************************/
+void Velocity::setVelocity(double angle, double speed)
 {
-	return sqrt(dx * dx + dy * dy);
+	dx = sin(angle) * speed;
+	dy = cos(angle) * speed;
 }
 
-/*********************************************
- * GET DIRECTION
- * Computes the direction of travel based on
- * the current velocity.
- *********************************************/
-Direction Velocity::getDirection() const
+/***********************************************************************
+ * Velocity UPDATE VELOCITY
+ * Adds acceleration to the velocity
+ ************************************************************************/
+void Velocity::updateVelocity(const Acceleration& accel, double time)
 {
-	Direction dir;
-	dir.setDxDy(dx, dy);
-	return dir;
+	dx = (dx + accel.getDDX() * time);
+	dy = (dy + accel.getDDY() * time);
 }
 
-/*********************************************
- * SET SPEED DIRECTION
- * Sets the speed and the direction of an
- * object's velocity.
- *********************************************/
-void Velocity::setSpeedDirection(double speed, const Direction &dir)
+
+void Velocity::addVelocity(Velocity vel)
 {
-	dx = speed * dir.getDx(); // speed * sin(angle)
-	dy = speed * dir.getDy(); // speed * cos(angle)
+	dx += vel.getDX();
+	dy += vel.getDY();
 }
 
-/*********************************************
- * SET SPEED DIRECTION
- * Sets the speed and the direction (in degrees)
- * of an object's velocity.
- *********************************************/
-void Velocity::setSpeedDirection(double speedX, double speedY, const Direction &dir)
+/******************************************
+ * VELOCITY : ASSIGNMENT
+ * Assign a point
+ *****************************************/
+Velocity& Velocity::operator = (const Velocity& vel)
 {
-	dx = speedX * dir.getDx();
-	dy = speedY * dir.getDy();
+	dx = vel.dx;
+	dy = vel.dy;
+	return *this;
 }
-
-/*********************************************
- * APPLY ACCELERATION
- * Applies acceleration to the current velocity
- *********************************************/
-void Velocity::applyAcceleration(const Acceleration &acc)
-{
-	dx += acc.getDDx();
-	dy += acc.getDDy();
-}
-
-/*********************************************
- * UPDATE
- * Updates the velocity based on its current velocity,
- * acceleration, and time.
- *********************************************/
-void Velocity::updateVelocity(const Acceleration &acc, double time)
-{
-	// velocity = current velocity + acceleration * time
-	double newDx = getDx() + acc.getDDx() * time;
-	double newDy = getDy() + acc.getDDy() * time;
-	
-	setDx(newDx);
-	setDy(newDy);
-}
-
