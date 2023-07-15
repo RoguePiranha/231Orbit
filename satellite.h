@@ -16,6 +16,7 @@ class TestSatellite;
 class Satellite : public SpaceObject
 {
 public:
+<<<<<<< Updated upstream
 	friend TestSatellite;
 	
 	Satellite() : SpaceObject(0.0, 0.0), velocity(0.0, 0.0), age(0.0), lifeSpan(0.0), alive(true), invisible(false) {}
@@ -87,6 +88,30 @@ protected: // inherits pos, direction, radius, angularVelociy, and alive
 	bool alive;
 	bool invisible;
    
+=======
+   Satellite(){}
+   Satellite(double x, double y) {pos.setMetersX(x);  pos.setMetersY(y);}
+   Satellite(double x, double y, double dx, double dy);
+   Status getStatus()      { return status; }
+   Type getType()          { return type; }
+   Position getPosition()  { return pos; }
+   double getRadius()      { return radius; }
+   double getDecayTime()   { return decayTime; }
+   void setDeadStatus() { status = DEAD; }
+   void setBrokenStatus() { status = BROKEN; }
+   void setPosition(Position position) { pos = position; }
+   void setVelocity(Velocity vel) { velocity = vel;}
+   bool updateAngle() { return angle+= 25; }
+   void updateDecayTime() {decayTime--; }
+   virtual void satelliteInput(const Interface* pUI, list<Satellite*> &satellites) {}
+   virtual void draw() const {}
+   virtual void drawSpaceShip(const Interface *pUI) const {}
+   virtual void spawnFragments(list<Satellite*>& satellites);
+   virtual void spawnProjectile(list<Satellite*>& satellites);
+   virtual void spawnParts(list<Satellite*>& satellites) {}
+   virtual void move(double time);
+   virtual void moveShip(double time, const Interface* pUI){}
+>>>>>>> Stashed changes
 };
 
 

@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 ﻿  acceleration.cpp
   direction.cpp
   orbit.cpp
@@ -13,3 +14,29 @@ C:\Users\offic\Documents\GitHub\231Orbit\satellite.cpp(11,17): warning C4244: 'i
   velocity.cpp
   Generating Code...
   Lab07.vcxproj -> C:\Users\offic\Documents\GitHub\231Orbit\x64\Debug\Lab07.exe
+=======
+﻿  Acceleration.cpp
+  dragon.cpp
+  game.cpp
+C:\Users\akswa\OneDrive\Documents\BYU-I\2023\Spring\CSE 231\231Orbit\game.cpp(196,58): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  gps.cpp
+  hubble.cpp
+  Lab07.cpp
+  position.cpp
+  projectile.cpp
+  satellite.cpp
+  ship.cpp
+  sputnik1.cpp
+  starlink.cpp
+  test.cpp
+  uiDraw.cpp
+  uiInteract.cpp
+  Velocity.cpp
+  Running Code Analysis for C/C++...
+  Generating Code...
+  Lab07.vcxproj -> C:\Users\akswa\OneDrive\Documents\BYU-I\2023\Spring\CSE 231\231Orbit\x64\Debug\Lab07.exe
+C:\Users\akswa\OneDrive\Documents\BYU-I\2023\Spring\CSE 231\231Orbit\satellite.h(31): warning C26495: Variable 'Satellite::angularVelocity' is uninitialized. Always initialize a member variable (type.6).
+C:\Users\akswa\OneDrive\Documents\BYU-I\2023\Spring\CSE 231\231Orbit\satellite.h(32): warning C26495: Variable 'Satellite::angularVelocity' is uninitialized. Always initialize a member variable (type.6).
+C:\Users\akswa\OneDrive\Documents\BYU-I\2023\Spring\CSE 231\231Orbit\star.h(11): warning C26495: Variable 'Star::phaseStar' is uninitialized. Always initialize a member variable (type.6).
+C:\Users\akswa\OneDrive\Documents\BYU-I\2023\Spring\CSE 231\231Orbit\satellite.cpp(5): warning C26495: Variable 'Satellite::angularVelocity' is uninitialized. Always initialize a member variable (type.6).
+>>>>>>> Stashed changes

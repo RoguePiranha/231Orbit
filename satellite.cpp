@@ -1,5 +1,6 @@
 #include "satellite.h"
 
+<<<<<<< Updated upstream
 /*********************************************
  *  GET ALTITUDE
  *  Computes the distance from the center of the
@@ -10,6 +11,37 @@ double Satellite::getAltitude() const
  
 	float distance = sqrt(pos.getMetersX() * pos.getMetersX()
 						  + pos.getMetersY() * pos.getMetersY());
+=======
+Satellite::Satellite(double x, double y, double dx, double dy) 
+{ 
+   pos.setMetersX(x);  
+   pos.setMetersY(y); 
+   velocity.setDX(dx); 
+   velocity.setDY(dy); 
+}
+
+void Satellite::spawnFragments(list<Satellite*>& satellites)
+{
+   Fragment*  pFragment1 = new Fragment(pos.getMetersX() + random(-6000000.0, 6000000.0), pos.getMetersY() + 3000000 + random(-6000000.0, 6000000.0), velocity.getDX(), velocity.getDY());
+
+   satellites.push_back(pFragment1);
+
+}
+
+void Satellite::spawnProjectile(list<Satellite*>& satellites)
+{
+   //Step 1: Set Bullet to Ship Position
+   Projectile* pProjectile = new Projectile(pos.getMetersX(), pos.getMetersY());
+
+   //Step 2: Give Velocity
+   Velocity projectileVel;
+   projectileVel.setVelocity(angle, 50000.0);
+   projectileVel.addVelocity(velocity);
+   pProjectile->setVelocity(projectileVel);
+   pProjectile->move(100);
+   
+   satellites.push_back(pProjectile);
+>>>>>>> Stashed changes
 
 	return distance - EARTH_RADIUS;
 }
@@ -21,6 +53,7 @@ double Satellite::getAltitude() const
  *********************************************/
 Acceleration Satellite::getGravity()
 {
+<<<<<<< Updated upstream
 	// altitude = height above the earth
 	double altitude = getAltitude();
 	double gravity = 9.8067;
@@ -28,6 +61,11 @@ Acceleration Satellite::getGravity()
 	// direction of gravity points down
 	Direction dirGravity;
 	dirGravity.setDxDy(-pos.getMetersX(), -pos.getMetersY());
+=======
+   Acceleration accel;
+   // Compute physicss
+   double gravity = gravityDirection(pos.getMetersX(), pos.getMetersY());
+>>>>>>> Stashed changes
 
 	double tmp = EARTH_RADIUS / (EARTH_RADIUS + altitude);
 	double aGravity = GRAVITY * pow(tmp, 2);
