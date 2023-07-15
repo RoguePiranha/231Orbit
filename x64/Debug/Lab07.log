@@ -1,2 +1,26 @@
-﻿  satellite.cpp
-  Lab07.vcxproj -> C:\Users\akswa\OneDrive\Documents\BYU-I\2023\Spring\CSE 231\231Orbit\x64\Debug\Lab07.exe
+﻿  acceleration.cpp
+  direction.cpp
+  gpsLeft.cpp
+  gpsRight.cpp
+  hubble.cpp
+  orbit.cpp
+  position.cpp
+  projectile.cpp
+  satellite.cpp
+C:\Users\offic\Documents\GitHub\231Orbit\satellite.cpp(24,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  satelliteFragment.cpp
+  ship.cpp
+  simulator.cpp
+  star.cpp
+  testDirection.cpp
+  testHubble.cpp
+  testRunner.cpp
+  testShip.cpp
+  testVelocity.cpp
+  uiDraw.cpp
+  uiInteract.cpp
+  Generating Code...
+  Compiling...
+  velocity.cpp
+  Generating Code...
+  Lab07.vcxproj -> C:\Users\offic\Documents\GitHub\231Orbit\x64\Debug\Lab07.exe

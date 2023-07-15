@@ -1,47 +1,72 @@
 #include "ship.h"
-
-
-/***************************************
-* SATELLITE INPUT
-* Move the Ship
-****************************************/
-void Ship::satelliteInput(const Interface * pUI, list<Satellite*> &satellites)
+/*********************************************
+* ROTATE SHIP
+*********************************************/
+void Ship::input(const Interface *pUI, double time, list<Satellite*> &satellites)
 {
-    if (pUI->isLeft())
-       angle -= 0.1;
-    if (pUI->isRight())
-       angle += 0.1;
-    if (pUI->isSpace())
-       spawnProjectile(satellites);
+	
+	// ship turns counter-clockwise
+	if (pUI->isLeft())
+	{
+		// rotates direction in radians
+		rotate(-0.1);
+	}
+	 
+	// ship turns clockwise
+	if (pUI->isRight())
+	{
+		// rotates direction in radians
+		rotate(0.1);
+	}
+  
+	// add thrust
+	if (pUI->isDown())
+	{
+		applyThrust(time);
+	}
+	
+	if (!pUI->isDown())
+		setThrust(false);
+	
+	// launch projectile
+	if (pUI->isSpace())
+	{
+		launchProjectile(satellites);
+	 }
+ }
+
+/*********************************************
+* APPLY THRUST
+*********************************************/
+void Ship::applyThrust(double time)
+{
+	setThrust(true);
+
+	velocity.setSpeedDirection(velocity.getSpeed() + 15, getDirection());
+	Acceleration aGravity = getGravity();
+	
+	// thrust acceleration is 2.0,
+	// which lasts for 48 seconds of simulation time
+	velocity.updateVelocity(aGravity, time * 2.0);
+	updatePosition(aGravity, time);
 }
 
-/***************************************
-* MOVE SHIP
-* Calculate the math to move ship
-****************************************/
-void Ship::moveShip(double time, const Interface* pUI)
+/*********************************************
+* LAUNCH PROJECTILE
+*********************************************/
+void Ship::launchProjectile(list<Satellite*> &satellites)
 {
-    Acceleration accel;
+	// set direction for projectile to be fired
+	Direction fireDirection;
+	fireDirection.setRadians(getDirectionAngle());
+	
+	// projectile is 9,000 m/s faster than the ship
+	Velocity fireVelocity;
+	fireVelocity.setSpeedDirection((velocity.getSpeed() + 9000), fireDirection);
 
-      // Compute physicss
-      double gravity = gravityDirection(pos.getMetersX(), pos.getMetersY());
-
-      double height = computeHeightAboveEarth(pos.getMetersX(), pos.getMetersY());
-
-      double gHeight = gravityHeight(height);
-
-      accel.setDDX(accel.computeHorizontalComp(gravity, gHeight));
-      accel.setDDY(accel.computeVerticalComp(gravity, gHeight));
-
-      if (pUI->isUp())
-      {
-        accel.setDDX(accel.getDDX() + accel.computeHorizontalComp(angle, 1.5));
-        accel.setDDY(accel.getDDY()  + accel.computeVerticalComp(angle, 1.5));
-      }
-
-      velocity.updateVelocity(accel, time);
-
-      pos.setMetersX(distanceFormula(pos.getMetersX(), velocity.getDX(), accel.getDDX(), time));
-      pos.setMetersY(distanceFormula(pos.getMetersY(), velocity.getDY(), accel.getDDY(), time));
-   
+	Projectile *projectile = new Projectile(getPos(), fireVelocity, fireDirection);
+	// add to satellites list
+	satellites.push_back(projectile);
+	
 }
+

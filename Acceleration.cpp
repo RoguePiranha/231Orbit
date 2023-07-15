@@ -1,31 +1,16 @@
-#include "Acceleration.h"
+#include "acceleration.h"
 
- /***********************************************************************
-  * Acceleration
-  * A non-default constructor that takes in a ddx and ddy
-  ************************************************************************/
-Acceleration::Acceleration(double ddx, double ddy)
+/*********************************************
+ * SET ACCELERATION
+ * Sets acceleration based on its two components: its
+ * magnitude and its direction 
+ *  *********************************************/
+void Acceleration::setAccelerationDirection(double acc, const Direction &dir)
 {
-   this->ddx = ddx;
-   this->ddy = ddy;
+	// ddx = acc * sin(angle)
+	setDDx(acc * dir.getDx());
+	
+	// ddy = acc * cos(angle)
+	setDDy(acc * dir.getDy());
 }
 
-/***********************************************************************
- * Acceleration COMPUTE HORIZONTAL COMP
- * Uses dx to calculate ddx.
- ************************************************************************/
-double Acceleration::computeHorizontalComp(double angle, double gravityHeight) const
-{
-   // Compute x componenent of acceleration
-   return sin(angle) * gravityHeight;
-}
-
-/***********************************************************************
- * Acceleration COMPUTE VERTICAL COMP
- * Uses dy to calculate ddy.
- ************************************************************************/
-double Acceleration::computeVerticalComp(double angle, double gravityHeight) const
-{
-   // Compute y componenent of acceleration
-   return (cos(angle) * gravityHeight);
-}

@@ -1,6 +1,6 @@
 /***********************************************************************
  * Header File:
- *    Point : The representation of a position 
+ *    Point : The representation of a position
  * Author:
  *    Br. Helfrich
  * Summary:
@@ -8,9 +8,10 @@
  *    or the location on the field.
  ************************************************************************/
 
-#pragma once
-#include "physics.h"
-#include <iostream> 
+#ifndef position_h
+#define position_h
+
+#include <iostream>
 #include <cmath>
 
 class TestPosition;
@@ -19,63 +20,49 @@ class Velocity;
 
 /*********************************************
  * Position
- * A single position on the field in Meters  
+ * A single position on the field in Meters
  *********************************************/
 class Position
 {
 public:
-   friend TestPosition;
+	friend TestPosition;
    
-   // constructors
-   Position()            : x(0.0), y(0.0)  {}
-   Position(double x, double y);
-   Position(const Position & pt) : x(pt.x), y(pt.y) {}
-   Position& operator = (const Position& pt);
+	// constructors
+	Position() : x(0.0), y(0.0) {}
+	Position(double x, double y);
+	Position(const Position & pt) : x(pt.x), y(pt.y) {}
+	Position& operator = (const Position& pt);
 
-   // getters
-   double getMetersX()       const { return x;                    }
-   double getMetersY()       const { return y;                    }
-   double getPixelsX()       const { return x / metersFromPixels; }
-   double getPixelsY()       const { return y / metersFromPixels; }
-    
-   // setters
-   void setMeters(double xMeters, double yMeters) {x = xMeters; y = yMeters; }
-   void setMetersX(double xMeters)       { x = xMeters;           }
-   void setMetersY(double yMeters)       { y = yMeters;           }
-   void setPixelsX(double xPixels)       { x = xPixels * metersFromPixels;          }
-   void setPixelsY(double yPixels)       { y = yPixels * metersFromPixels;          }
-   void addMetersX(double dxMeters)      { setMetersX(getMetersX() + dxMeters);     }
-   void addMetersY(double dyMeters)      { setMetersY(getMetersY() + dyMeters);     }
-   void addPixelsX(double dxPixels)      { setPixelsX(getPixelsX() + dxPixels);     }
-   void addPixelsY(double dyPixels)      { setPixelsY(getPixelsY() + dyPixels);     }
+	// getters
+	double getMetersX()       const { return x;                    }
+	double getMetersY()       const { return y;                    }
+	double getPixelsX()       const { return x / metersFromPixels; }
+	double getPixelsY()       const { return y / metersFromPixels; }
 
-   // deal with the ratio of meters to pixels
-   void setZoom(double metersFromPixels)
-   {
-      this->metersFromPixels = metersFromPixels;
-   }
-   double getZoom() const { return metersFromPixels; }
+	// setters
+	void setMeters(double xMeters, double yMeters) {x = xMeters; y = yMeters; }
+	void setMetersX(double xMeters)       { x = xMeters;           }
+	void setMetersY(double yMeters)       { y = yMeters;           }
+	void setPixelsX(double xPixels)       { x = xPixels * metersFromPixels;          }
+	void setPixelsY(double yPixels)       { y = yPixels * metersFromPixels;          }
+	void addMetersX(double dxMeters)      { setMetersX(getMetersX() + dxMeters);     }
+	void addMetersY(double dyMeters)      { setMetersY(getMetersY() + dyMeters);     }
+	void addPixelsX(double dxPixels)      { setPixelsX(getPixelsX() + dxPixels);     }
+	void addPixelsY(double dyPixels)      { setPixelsY(getPixelsY() + dyPixels);     }
+
+	// deal with the ratio of meters to pixels
+	void setZoom(double metersFromPixels)
+	{
+	   this->metersFromPixels = metersFromPixels;
+	}
+	double convertToMeters(double pixels) const { return pixels * metersFromPixels; }
+	double getZoom() const { return metersFromPixels; }
 
 private:
-   double x;                 // horizontal position
-   double y;                 // vertical position
-   static double metersFromPixels;
+	double x;                 // horizontal position
+	double y;                 // vertical position
+	static double metersFromPixels; // 128000
 };
-
-/***********************************************
-* DISTANCE FORMULA
-* Finding the new position.
-* The equation is:
-*   Horizontal:
-*       x = x + dx * t + .5 * ddx * t^2
-*   Vertical:
-*       y = y + dy * t + .5 * ddy * t^2
-***********************************************/
-inline double distanceFormula(double s, double ds, double dds, double time)
-{
-   return s + (ds * time) + (.5 * dds * (time * time));
-}
-
 
 /*********************************************
  * COMPUTE DISTANCE
@@ -84,7 +71,7 @@ inline double distanceFormula(double s, double ds, double dds, double time)
 inline double computeDistance(const Position& pos1, const Position& pos2)
 {
    return sqrt((pos1.getMetersX() - pos2.getMetersX()) * (pos1.getMetersX() - pos2.getMetersX()) +
-               (pos1.getMetersY() - pos2.getMetersY()) * (pos1.getMetersY() - pos2.getMetersY()));
+			   (pos1.getMetersY() - pos2.getMetersY()) * (pos1.getMetersY() - pos2.getMetersY()));
 }
 
 // stream I/O useful for debugging
@@ -98,8 +85,11 @@ std::istream & operator >> (std::istream & in,        Position& pt);
  *********************************************/
 struct PT
 {
-   double x;
-   double y;
+	double x;
+	double y;
 };
+
+#endif /* position_h */
+
 
 

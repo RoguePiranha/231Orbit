@@ -14,7 +14,8 @@
  *    4. isDown()     - Is a given key pressed on this loop?
  **********************************************/
 
-#pragma once
+#ifndef uiInteract_h
+#define uiInteract_h
 
 #include "position.h"
 #include <algorithm> // used for min() and max() (specifically required by Visual Studio)
@@ -37,7 +38,7 @@ public:
    // the default parameters
    Interface(int argc, char ** argv, const char * title, const Position & ptUpperRight)
    {
-      initialize(argc, argv, title, ptUpperRight);
+	  initialize(argc, argv, title, ptUpperRight);
    }
    
    // Destructor, in case any housecleaning needs to occur
@@ -53,7 +54,7 @@ public:
    void setNextDrawTime();
 
    // Retrieve the next tick time... the time of the next draw.
-   unsigned long getNextTick() { return nextTick; };
+   unsigned long getNextTick() { return nextTick; }
 
    // How many frames per second are we configured for?
    void setFramesPerSecond(double value);
@@ -64,14 +65,14 @@ public:
    void keyEvent();
 
    // Current frame rate
-   double frameRate() const { return timePeriod;   };
+   double frameRate() const { return timePeriod;   }
    
    // Get various key events
-   int  isDown()      const { return isDownPress;  };
-   int  isUp()        const { return isUpPress;    };
-   int  isLeft()      const { return isLeftPress;  };
-   int  isRight()     const { return isRightPress; };
-   bool isSpace()     const { return isSpacePress; };
+   int  isDown()      const { return isDownPress;  }
+   int  isUp()        const { return isUpPress;    }
+   int  isLeft()      const { return isLeftPress;  }
+   int  isRight()     const { return isRightPress; }
+   bool isSpace()     const { return isSpacePress; }
    
    static void *p;                   // for client
    static void (*callBack)(const Interface *, void *);
@@ -97,7 +98,7 @@ private:
  * This is the main callback from OpenGL. It gets called constantly by
  * the graphics engine to refresh and draw the window.  Here we will
  * clear the background buffer, draw on it, and send it to the forefront
- * when the appropriate time period has passsed.
+ * when the appropriate time period has passed.
  *
  * Note: This and all other callbacks can't be member functions, they must
  * have global scope for OpenGL to see them.
@@ -107,7 +108,7 @@ void drawCallback();
 /************************************************************************
  * KEY DOWN CALLBACK
  * When a key on the keyboard has been pressed, we need to pass that
- * on to the client.  Currnetly, we are only registering the arrow keys
+ * on to the client.  Currently, we are only registering the arrow keys
  *************************************************************************/
 void keyDownCallback(int key, int x, int y);
 
@@ -129,3 +130,7 @@ void keyboardCallback(unsigned char key, int x, int y);
  * Set the game in action.  We will get control back in our drawCallback
  *************************************************************************/
 void run();
+
+
+#endif /* uiInteract_h */
+

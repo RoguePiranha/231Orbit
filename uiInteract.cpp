@@ -68,7 +68,7 @@ void sleep(unsigned long msSleep)
    req.tv_nsec = msSleep * 1000000L;
 
    while (nanosleep(&req, &req) == -1)
-      ;
+	  ;
 #endif // LINUX, XCODE
    return;
 }
@@ -97,7 +97,7 @@ void drawCallback()
    
    //loop until the timer runs out
    if (!ui.isTimeToDraw())
-      sleep((unsigned long)((ui.getNextTick() - clock()) / 1000));
+	  sleep((unsigned long)((ui.getNextTick() - clock()) / 1000));
 
    // from this point, set the next draw time
    ui.setNextDrawTime();
@@ -170,22 +170,22 @@ void Interface::keyEvent(int key, bool fDown)
 {
    switch(key)
    {
-      case GLUT_KEY_DOWN:
-         isDownPress = fDown;
-         break;
-      case GLUT_KEY_UP:
-         isUpPress = fDown;
-         break;
-      case GLUT_KEY_RIGHT:
-         isRightPress = fDown;
-         break;
-      case GLUT_KEY_LEFT:
-         isLeftPress = fDown;
-         break;
-      case GLUT_KEY_HOME:
-      case ' ':
-         isSpacePress = fDown;
-         break;
+	  case GLUT_KEY_DOWN:
+		 isDownPress = fDown;
+		 break;
+	  case GLUT_KEY_UP:
+		 isUpPress = fDown;
+		 break;
+	  case GLUT_KEY_RIGHT:
+		 isRightPress = fDown;
+		 break;
+	  case GLUT_KEY_LEFT:
+		 isLeftPress = fDown;
+		 break;
+	  case GLUT_KEY_HOME:
+	  case ' ':
+		 isSpacePress = fDown;
+		 break;
    }
 }
 
@@ -198,13 +198,13 @@ void Interface::keyEvent(int key, bool fDown)
 void Interface::keyEvent()
 {
    if (isDownPress)
-      isDownPress++;
+	  isDownPress++;
    if (isUpPress)
-      isUpPress++;
+	  isUpPress++;
    if (isLeftPress)
-      isLeftPress++;
+	  isLeftPress++;
    if (isRightPress)
-      isRightPress++;
+	  isRightPress++;
    isSpacePress = false;
 }
 
@@ -237,7 +237,7 @@ void Interface::setNextDrawTime()
  *************************************************************************/
 void Interface::setFramesPerSecond(double value)
 {
-    timePeriod = (1 / value);
+	timePeriod = (1 / value);
 }
 
 /***************************************************
@@ -251,11 +251,10 @@ int          Interface::isLeftPress  = 0;
 int          Interface::isRightPress = 0;
 bool         Interface::isSpacePress = false;
 bool         Interface::initialized  = false;
-double       Interface::timePeriod   = 1.0 / 30;  // default to 30 frames/second
+double       Interface::timePeriod   = 1.0 / 30; // default to 30 frames/second
 unsigned long Interface::nextTick     = 0;        // redraw now please
 void *       Interface::p            = NULL;
 void (*Interface::callBack)(const Interface *, void *) = NULL;
-
 
 
 /************************************************************************
@@ -275,11 +274,11 @@ Interface::~Interface()
  *           argv:       The actual command-line parameters
  *           title:      The text for the titlebar of the window
  *************************************************************************/
-void Interface::initialize(int argc, char ** argv, const char * title, 
-                           const Position & ptUpperRight)
+void Interface::initialize(int argc, char ** argv, const char * title,
+						   const Position & ptUpperRight)
 {
    if (initialized)
-      return;
+	  return;
    
    // set up the random number generator
    srand((unsigned int)time(NULL));
@@ -287,9 +286,9 @@ void Interface::initialize(int argc, char ** argv, const char * title,
    // create the window
    glutInit(&argc, argv);
    glutInitWindowSize((int)ptUpperRight.getPixelsX(),
-                      (int)ptUpperRight.getPixelsY());   // size of the window
-            
-   glutInitWindowPosition( 0, 0);                  // initial position 
+					  (int)ptUpperRight.getPixelsY());   // size of the window
+			
+   glutInitWindowPosition( 0, 0);                  // initial position
    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);    // double buffering
    glutCreateWindow(title);                        // text on titlebar
    glutIgnoreKeyRepeat(true);
@@ -297,7 +296,7 @@ void Interface::initialize(int argc, char ** argv, const char * title,
    // set up the drawing style: B/W and 2D
    glClearColor(0.0, 0.0, 0.0, 0);            // White is the background color
    gluOrtho2D(-(int)ptUpperRight.getPixelsX() / 2, (int)ptUpperRight.getPixelsX() / 2,    // range of x values: (0, width)
-              -(int)ptUpperRight.getPixelsY() / 2, (int)ptUpperRight.getPixelsY() / 2);   // range of y values: (0, height)
+			  -(int)ptUpperRight.getPixelsY() / 2, (int)ptUpperRight.getPixelsY() / 2);   // range of y values: (0, height)
 
    // register the callbacks so OpenGL knows how to call us
    glutDisplayFunc(   drawCallback    );
@@ -335,4 +334,6 @@ void Interface::run(void (*callBack)(const Interface *, void *), void *p)
 
    return;
 }
+
+
 
