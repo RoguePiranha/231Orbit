@@ -167,7 +167,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="acceleration.cpp" />
-    <ClCompile Include="direction.cpp" />
     <ClCompile Include="dragon.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gps.cpp" />
